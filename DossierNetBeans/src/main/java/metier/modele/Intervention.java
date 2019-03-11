@@ -7,6 +7,7 @@ package metier.modele;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,7 +34,7 @@ public abstract class Intervention implements Serializable {
     private String commentaire;
     
     // Erreur si on met la date dans la BDD
-    //private Date horodate;
+     //private Date horodate;
 
     public Intervention() {
     }

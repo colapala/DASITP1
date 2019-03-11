@@ -23,6 +23,10 @@ public class test {
     public static void afficher(Personne p) {
         System.out.println(p.getNom() + " " + p.getPrenom());
     }
+    
+    public static void afficher(Intervention i) {
+        System.out.println(i.getType() + " " + i.getDescription());
+    }
 
     public static Personne rechercherPersonne(EntityManager em, Integer id) {
         return em.find(Personne.class, id);
@@ -41,6 +45,15 @@ public class test {
         List<Personne> result = (List<Personne>) query.getResultList();
         for (Personne p : result) {
             afficher(p);
+        }
+    }
+    
+     public static void displayAllInterventions(EntityManager em) {
+        String requete = "select i from Intervention i";
+        Query query = em.createQuery(requete);
+        List<Intervention> result = (List<Intervention>) query.getResultList();
+        for (Intervention i : result) {
+            afficher(i);
         }
     }
 
@@ -76,6 +89,7 @@ public class test {
             
         //initPersonnes(em);
         displayAllPersonnes(em);
+        displayAllInterventions(em);
         em.close();
     }
 
