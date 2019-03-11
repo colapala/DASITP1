@@ -64,12 +64,14 @@ public class test {
         Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "motdepasse", "adresse", "063256585", "mail@mail.com",true,100,10);
         InterventionAnimal A1=new InterventionAnimal("animal","hot-dog","scoubidou");
         InterventionLivraison L1=new InterventionLivraison("livraison","colis","Entreprise","colis non livré");
+        InterventionIncident I1=new InterventionIncident("incident","soucis");
         EntityTransaction tx = em.getTransaction();
             tx.begin();
             em.persist(p2);
             em.persist(E2);
-           // em.persist(A1);
-           // em.persist(L1);
+            em.persist(A1);
+            em.persist(L1);
+            em.persist(I1);
             tx.commit();
             
         //initPersonnes(em);

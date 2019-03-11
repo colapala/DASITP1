@@ -25,12 +25,15 @@ public abstract class Intervention implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     
-    // private int status;
     private String type;
     private String description;
-   // private int heureDeFin;
-    //private String commentaire;
-   // private Date horodate;
+    
+    private int status;
+    private int heureDeFin;
+    private String commentaire;
+    
+    // Erreur si on met la date dans la BDD
+    //private Date horodate;
 
     public Intervention() {
     }
@@ -40,7 +43,7 @@ public abstract class Intervention implements Serializable {
         this.description = description;
     }
 
-  /* public Integer getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -64,9 +67,9 @@ public abstract class Intervention implements Serializable {
         return commentaire;
     }
 
-    public Date getHorodate() {
+   /* public Date getHorodate() {
         return horodate;
-    }
+    }*/
 
     public void setStatus(int status) {
         this.status = status;
@@ -88,7 +91,7 @@ public abstract class Intervention implements Serializable {
         this.commentaire = commentaire;
     }
 
-    public void setHorodate(Date horodate) {
+    /*public void setHorodate(Date horodate) {
         this.horodate = horodate;
     } */
     

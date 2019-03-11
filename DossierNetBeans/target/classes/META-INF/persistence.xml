@@ -5,6 +5,10 @@
     <class>metier.modele.Client</class>
     <class>metier.modele.Employe</class>
     <class>metier.modele.Personne</class>
+    <class>metier.modele.Intervention</class>
+    <class>metier.modele.InterventionAnimal</class>
+    <class>metier.modele.InterventionIncident</class>
+    <class>metier.modele.InterventionLivraison</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/koko"/>
       <property name="javax.persistence.jdbc.user" value="coco"/>
