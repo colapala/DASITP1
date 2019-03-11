@@ -36,7 +36,7 @@ public class test {
     }
 
     public static void displayAllPersonnes(EntityManager em) {
-        String requete = "select c from Client c";
+        String requete = "select p from Personne p";
         Query query = em.createQuery(requete);
         List<Personne> result = (List<Personne>) query.getResultList();
         for (Personne p : result) {
@@ -59,15 +59,21 @@ public class test {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(NOM_PERSISTENCE);
         EntityManager em = emf.createEntityManager();
 
-        initPersonnes(em);
-       /* Client p2 = new Client(true, "DELAPIERRE", "ROGER", "motdepasse", "adresse", "063256585", "mail@mail.com");
-           EntityTransaction tx = em.getTransaction();
+        //initPersonnes(em);
+        Client p2 = new Client(true, "DELAPIERRE", "ROGER", "motdepasse", "adresse", "063256585", "mail@mail.com");
+        Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "motdepasse", "adresse", "063256585", "mail@mail.com",true,100,10);
+        InterventionAnimal A1=new InterventionAnimal("animal","hot-dog","scoubidou");
+        InterventionLivraison L1=new InterventionLivraison("livraison","colis","Entreprise","colis non livré");
+        EntityTransaction tx = em.getTransaction();
             tx.begin();
             em.persist(p2);
-            tx.commit();*/
+            em.persist(E2);
+           // em.persist(A1);
+           // em.persist(L1);
+            tx.commit();
             
         //initPersonnes(em);
-       // displayAllPersonnes(em);
+        displayAllPersonnes(em);
         em.close();
     }
 

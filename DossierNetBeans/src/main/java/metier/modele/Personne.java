@@ -32,6 +32,11 @@ public abstract class Personne implements Serializable {
     private String adressePostale;
     private String tel;
     private String mail;
+    
+    //A calculer à partir de l'adresse
+    private Float latitude;
+    private Float longitude;
+    
 
     public Personne() {
     }
