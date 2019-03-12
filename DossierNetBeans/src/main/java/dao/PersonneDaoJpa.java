@@ -60,4 +60,7 @@ public class PersonneDaoJpa{
         }
     }
     
+    
+    //Besoin de pouvoir trouver une Personne à partir d'une intervention ?
+    
 }
