@@ -20,8 +20,8 @@ public class InterventionLivraison extends Intervention {
     public InterventionLivraison() {
     }
 
-    public InterventionLivraison(String type,String objet, String entreprise, String description) {
-        super(type, description);
+    public InterventionLivraison(String objet, String entreprise, String description) {
+        super(2, description);//initialisation du type à 2
         this.objet = objet;
         this.entreprise = entreprise;
     }

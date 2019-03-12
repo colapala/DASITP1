@@ -25,7 +25,7 @@ public class test {
     }
     
     public static void afficher(Intervention i) {
-        System.out.println(i.getType() + " " + i.getDescription());
+        System.out.println("Type :"+i.getType() + " " + "Desc :"+i.getDescription());
     }
 
     public static Personne rechercherPersonne(EntityManager em, Integer id) {
@@ -74,10 +74,10 @@ public class test {
 
         //initPersonnes(em);
         Client p2 = new Client(true, "DELAPIERRE", "ROGER", "motdepasse", "adresse", "063256585", "mail@mail.com");
-        Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "motdepasse", "adresse", "063256585", "mail@mail.com",true,100,10);
-        InterventionAnimal A1=new InterventionAnimal("animal","hot-dog","scoubidou");
-        InterventionLivraison L1=new InterventionLivraison("livraison","colis","Entreprise","colis non livré");
-        InterventionIncident I1=new InterventionIncident("incident","soucis");
+        Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "present", "adresse", "063256585", "mail@mail.com",true,100,10);
+        InterventionAnimal A1=new InterventionAnimal("hot-dog","scoubidou");
+        InterventionLivraison L1=new InterventionLivraison("colis","Entreprise","colis non livré");
+        InterventionIncident I1=new InterventionIncident("j'ai un probleme");
         EntityTransaction tx = em.getTransaction();
             tx.begin();
             em.persist(p2);

@@ -22,8 +22,8 @@ public class InterventionAnimal extends Intervention {
         this.animal = animal;
     }
 
-    public InterventionAnimal(String type,String animal, String description) {
-        super(type, description);
+    public InterventionAnimal(String animal, String description) {
+        super(1, description);//initialisation du type à 1
         this.animal = animal;
     }
 

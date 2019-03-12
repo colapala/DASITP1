@@ -26,7 +26,7 @@ public abstract class Intervention implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     
-    private String type;
+    private int type;
     private String description;
     
     private int status;
@@ -39,7 +39,7 @@ public abstract class Intervention implements Serializable {
     public Intervention() {
     }
     
-    public Intervention(String type, String description) {
+    public Intervention(int type, String description) {
         this.type = type;
         this.description = description;
     }
@@ -52,7 +52,7 @@ public abstract class Intervention implements Serializable {
         return status;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
@@ -76,7 +76,7 @@ public abstract class Intervention implements Serializable {
         this.status = status;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

@@ -17,7 +17,7 @@ public class InterventionIncident extends Intervention{
     public InterventionIncident() {
     }
 
-    public InterventionIncident(String type, String description) {
-        super(type, description);
+    public InterventionIncident(String description) {
+        super(3, description);
     }
 }
