@@ -22,11 +22,11 @@ public class InterventionDaoJpa{
         }
     }
     
-    public List<Intervention> recupererIntervention(int idPers){
+    public List<Intervention> recupererListeIntervention(Personne p){
         EntityManager em=JpaUtil.obtenirEntityManager();
         String jpql = "Select i from Intervention i where i.[...]=:id";
         Query requete=em.createQuery(jpql);
-        requete.setParameter("id",idPers);
+        requete.setParameter("id",p.getId());
         List<Intervention> result=null; //peut faire ça pr une liste ?
         try{
             result=(List<Intervention>) query.getResultList();
@@ -34,6 +34,19 @@ public class InterventionDaoJpa{
         }
         return result;
     }
+    
+    public Intervention recupererInterventionEnCours(Employe emp){ //Requete à compléter selon les attributs de Intervention dans la bdd
+        EntityManager em=JpaUtil.obtenirEntityManager();
+        String jpql = "Select i from Intervention i where i.[...]=:id and i.statut=0"; 
+        Query requete=em.createQuery(jpql);
+        requete.setParameter("id",emp.getId());
+        Intervention result=null;
+        try{
+            result=(Intervention) query.getSingleResult();
+        } catch (Exception e) {
+        }
+        return result;
+    } 
     
     public void modifierIntervention(Intervention i) //Pour le cas où on change son statut
         EntityManager em=JpaUtil.obtenirEntityManager();
