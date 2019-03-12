@@ -31,11 +31,12 @@ public class PersonneDaoJpa{
         em.persist(p);
     }
     
-    public void recupererPersonne(String mail){
+    public Personne recupererPersonne(String mail){
         EntityManager em=JpaUtil.obtenirEntityManager();
         Query requete = "Select p from Personne p where p.mail=:email";
         requete.setParameter("email",mail);
         Personne result=(Personne) requete.getSingleResult();
+        return result;
     }
     
 }
