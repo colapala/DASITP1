@@ -5,6 +5,7 @@
  */
 package metier.modele;
 
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -73,7 +74,8 @@ public class test {
         EntityManager em = emf.createEntityManager();
 
         //initPersonnes(em);
-        Client p2 = new Client(true, "DELAPIERRE", "ROGER", "motdepasse", "adresse", "063256585", "mail@mail.com");
+        Date d=new Date();
+        Client p2 = new Client(true, "DELAPIERRE", "ROGER", "motdepasse", "adresse", "063256585", "mail@mail.com",d);
         Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "present", "adresse", "063256585", "mail@mail.com",true,100,10);
         InterventionAnimal A1=new InterventionAnimal("hot-dog","scoubidou");
         InterventionLivraison L1=new InterventionLivraison("colis","Entreprise","colis non livré");

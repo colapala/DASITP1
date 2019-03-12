@@ -9,12 +9,15 @@ package metier.modele;
  *
  * @author Claharotte
  */
+import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Client extends Personne {
-
-    private int dateDeNaissance;
+    @Temporal(TemporalType.DATE)
+    private Date dateDeNaissance;
 
     public Client() {
     }
@@ -24,16 +27,16 @@ public class Client extends Personne {
     }
 
    
-    public Client(boolean civilite, String nom, String prenom, String motDePasse, String adressePostale, String tel, String mail, int dateDeNaissance) {
+    public Client(boolean civilite, String nom, String prenom, String motDePasse, String adressePostale, String tel, String mail, Date dateDeNaissance) {
         super(civilite, nom, prenom, motDePasse, adressePostale, tel, mail);
         this.dateDeNaissance = dateDeNaissance;
     }
 
-    public int getDateDeNaissance() {
+    public Date getDateDeNaissance() {
         return dateDeNaissance;
     }
 
-    public void setDateDeNaissance(int dateDeNaissance) {
+    public void setDateDeNaissance(Date dateDeNaissance) {
         this.dateDeNaissance = dateDeNaissance;
     }
 

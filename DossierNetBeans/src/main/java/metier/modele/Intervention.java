@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -33,8 +35,8 @@ public abstract class Intervention implements Serializable {
     private int heureDeFin;
     private String commentaire;
     
-    // Erreur si on met la date dans la BDD
-     //private Date horodate;
+    @Temporal(TemporalType.DATE)
+     private Date horodate=new Date();
 
     public Intervention() {
     }
@@ -68,9 +70,9 @@ public abstract class Intervention implements Serializable {
         return commentaire;
     }
 
-   /* public Date getHorodate() {
+    public Date getHorodate() {
         return horodate;
-    }*/
+    }
 
     public void setStatus(int status) {
         this.status = status;
@@ -92,8 +94,8 @@ public abstract class Intervention implements Serializable {
         this.commentaire = commentaire;
     }
 
-    /*public void setHorodate(Date horodate) {
+    public void setHorodate(Date horodate) {
         this.horodate = horodate;
-    } */
+    } 
     
 }

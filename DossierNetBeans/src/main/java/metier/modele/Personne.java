@@ -25,7 +25,7 @@ public abstract class Personne implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-     private String nom;
+    private String nom;
     private String prenom;
     private boolean civilite;
     private String motDePasse;
