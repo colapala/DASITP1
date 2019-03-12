@@ -13,13 +13,29 @@ import metier.modele.Personne;
  */
 public class PersonneDaoJpa{
     
-    public void creerPersonne(Personne p){
-        //JpaUtil.creerEntityManager();
-        EntityManager em=JpaUtil.obtenirEntityManager();
-        //JpaUtil.ouvrirTransaction();
-        em.persist(p);
-        /*JpaUtil.validerTransaction();
+    /*A mettre dans service : 
+        JpaUtil.creerEntityManager();
+        JpaUtil.ouvrirTransaction();
+       [...]
+        JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();*/
+    
+    /*A mettre dans le main une unique fois :
+        JpaUtil.init();
+        [...]
+        JpaUtil.destroy();
+    */
+    
+    public void creerPersonne(Personne p){
+        EntityManager em=JpaUtil.obtenirEntityManager();
+        em.persist(p);
+    }
+    
+    public void recupererPersonne(String mail){
+        EntityManager em=JpaUtil.obtenirEntityManager();
+        Query requete = "Select p from Personne p where p.mail=:email";
+        requete.setParameter("email",mail);
+        Personne result=(Personne) requete.getSingleResult();
     }
     
 }
