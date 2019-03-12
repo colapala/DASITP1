@@ -5,6 +5,7 @@
  */
 package dao;
 import javax.persistence.EntityManager;
+import metier.modele.Intervention;
 import metier.modele.Personne;
 
 /**
@@ -23,7 +24,8 @@ public class InterventionDaoJpa{
     
     public List<Intervention> recupererIntervention(int idPers){
         EntityManager em=JpaUtil.obtenirEntityManager();
-        Query requete = "Select i from Intervention i where i.[...]=:id";
+        String jpql = "Select i from Intervention i where i.[...]=:id";
+        Query requete=em.createQuery(jpql);
         requete.setParameter("id",idPers);
         List<Intervention> result=null; //peut faire ça pr une liste ?
         try{
