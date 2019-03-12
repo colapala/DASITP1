@@ -11,31 +11,19 @@ import metier.modele.Personne;
  *
  * @author Claharotte
  */
-public class PersonneDaoJpa{
+public class InterventionDaoJpa{
     
-    /*A mettre dans service : 
-        JpaUtil.creerEntityManager();
-        JpaUtil.ouvrirTransaction();
-       [...]
-        JpaUtil.validerTransaction();
-        JpaUtil.fermerEntityManager();*/
-    
-    /*A mettre dans le main une unique fois :
-        JpaUtil.init();
-        [...]
-        JpaUtil.destroy();
-    */
-    
-    public void creerPersonne(Personne p){
+    public void creeIntervention(Intervention i){
         EntityManager em=JpaUtil.obtenirEntityManager();
-        em.persist(p);
+        em.persist(i);
     }
     
-    public void recupererPersonne(String mail){
+    public List<Intervention> recupererIntervention(int idPers){
         EntityManager em=JpaUtil.obtenirEntityManager();
-        Query requete = "Select p from Personne p where p.mail=:email";
-        requete.setParameter("email",mail);
-        Personne result=(Personne) requete.getSingleResult();
+        Query requete = "Select i from Intervention i where i.[...]=:id";
+        requete.setParameter("id",idPers);
+        List<Intervention> result=(List<Intervention>) query.getResultList();
+        return result;
     }
     
 }
