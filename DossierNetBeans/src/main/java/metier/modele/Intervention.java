@@ -16,6 +16,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -24,6 +25,9 @@ import javax.persistence.TemporalType;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Intervention implements Serializable {
+    @ManyToOne
+    private Personne unePersonne;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -36,7 +40,7 @@ public abstract class Intervention implements Serializable {
     private String commentaire;
     
     @Temporal(TemporalType.DATE)
-     private Date horodate=new Date();
+     private Date horodate;
 
     public Intervention() {
     }

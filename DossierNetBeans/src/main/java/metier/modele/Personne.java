@@ -6,12 +6,16 @@
 package metier.modele;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  *
@@ -20,7 +24,9 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Personne implements Serializable {
-
+    @OneToMany(mappedBy="unePersonne")
+    private List<Intervention> interventions=new ArrayList<Intervention>();
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -29,7 +35,10 @@ public abstract class Personne implements Serializable {
     private String prenom;
     private boolean civilite;
     private String motDePasse;
+    
+    @Transient
     private String adressePostale;
+    
     private String tel;
     private String mail;
     
@@ -78,6 +87,18 @@ public abstract class Personne implements Serializable {
     public void setMail(String mail) {
         this.mail = mail;
     }
+    
+    public void setInterventions(List<Intervention> interventions) {
+        this.interventions = interventions;
+    }
+
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
+    }
 
     public Integer getId() {
         return id;
@@ -109,6 +130,18 @@ public abstract class Personne implements Serializable {
 
     public String getMail() {
         return mail;
+    }
+
+    public List<Intervention> getInterventions() {
+        return interventions;
+    }
+
+    public Float getLatitude() {
+        return latitude;
+    }
+
+    public Float getLongitude() {
+        return longitude;
     }
 
 }

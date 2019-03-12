@@ -5,8 +5,11 @@
  */
 package metier.modele;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -59,7 +62,8 @@ public class test {
     }
 
     public static void initPersonnes(EntityManager em) {
-        Client p2 = new Client(true, "DELAPIERRE", "ROGER", "motdepasse", "adresse", "063256585", "mail@mail.com",100);
+        Date d=new Date();
+        Client p2 = new Client(true, "DELAPIERRE", "ROGER", "motdepasse", "adresse", "063256585", "mail@mail.com",d);
         Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "motdepasse", "adresse", "063256585", "mail@mail.com",true,100,10);
         savePersonne(em, p2);
         savePersonne(em, E2);
@@ -80,6 +84,10 @@ public class test {
         InterventionAnimal A1=new InterventionAnimal("hot-dog","scoubidou");
         InterventionLivraison L1=new InterventionLivraison("colis","Entreprise","colis non livré");
         InterventionIncident I1=new InterventionIncident("j'ai un probleme");
+       /* List <Intervention> l=new ArrayList<Intervention>();
+        l.add(A1);
+        p2.setInterventions(l);*/
+        
         EntityTransaction tx = em.getTransaction();
             tx.begin();
             em.persist(p2);
