@@ -15,15 +15,31 @@ public class InterventionDaoJpa{
     
     public void creeIntervention(Intervention i){
         EntityManager em=JpaUtil.obtenirEntityManager();
-        em.persist(i);
+        try {
+            em.persist(i);
+        } catch(Exception e) {
+        }
     }
     
     public List<Intervention> recupererIntervention(int idPers){
         EntityManager em=JpaUtil.obtenirEntityManager();
         Query requete = "Select i from Intervention i where i.[...]=:id";
         requete.setParameter("id",idPers);
-        List<Intervention> result=(List<Intervention>) query.getResultList();
+        List<Intervention> result=null; //peut faire ça pr une liste ?
+        try{
+            result=(List<Intervention>) query.getResultList();
+        } catch (Exception e) {
+        }
         return result;
     }
+    
+    public void modifierIntervention(Intervention i) //Pour le cas où on change son statut
+        EntityManager em=JpaUtil.obtenirEntityManager();
+        try {
+            em.merge(i);
+        } catch(Exception e) {
+        }
+    }
+    
     
 }
