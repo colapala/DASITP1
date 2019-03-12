@@ -50,6 +50,13 @@ public abstract class Intervention implements Serializable {
         this.description = description;
     }
 
+     //*****************************************************
+    //A enlever 
+     //***************************************************
+    public void ajouterPersonne(Personne p){
+        unePersonne=p;
+    }
+    
     public Integer getId() {
         return id;
     }

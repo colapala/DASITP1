@@ -84,9 +84,9 @@ public class test {
         InterventionAnimal A1=new InterventionAnimal("hot-dog","scoubidou");
         InterventionLivraison L1=new InterventionLivraison("colis","Entreprise","colis non livré");
         InterventionIncident I1=new InterventionIncident("j'ai un probleme");
-       /* List <Intervention> l=new ArrayList<Intervention>();
-        l.add(A1);
-        p2.setInterventions(l);*/
+        //test des relations
+        I1.ajouterPersonne(p2);
+        L1.ajouterPersonne(p2);
         
         EntityTransaction tx = em.getTransaction();
             tx.begin();

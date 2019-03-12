@@ -25,7 +25,7 @@ import javax.persistence.Transient;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Personne implements Serializable {
     @OneToMany(mappedBy="unePersonne")
-    private List<Intervention> interventions=new ArrayList<Intervention>();
+    private List<Intervention> interventions;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -58,12 +58,15 @@ public abstract class Personne implements Serializable {
         this.adressePostale = adressePostale;
         this.tel = tel;
         this.mail = mail;
+        this.interventions=new ArrayList<Intervention>();
     }
+   
+
 
     public void setCivilite(boolean civilite) {
         this.civilite = civilite;
     }
-
+    
     public void setNom(String nom) {
         this.nom = nom;
     }
