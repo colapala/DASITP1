@@ -5,7 +5,10 @@
  */
 package metier.modele;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -13,6 +16,9 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Employe extends Personne {
+    @OneToMany(mappedBy="unEmploye")
+    private List<Intervention> interventions;
+    
     boolean dispo;
     int horaireEntree;
     int horaireSortie;
@@ -25,6 +31,7 @@ public class Employe extends Personne {
         this.dispo=dispo;
         this.horaireEntree=horaireEntree;
         this.horaireSortie=horaireSortie;
+        this.interventions=new ArrayList<Intervention>();
     }
 
     public boolean isDispo() {
@@ -38,7 +45,10 @@ public class Employe extends Personne {
     public int getHoraireSortie() {
         return horaireSortie;
     }
-
+    
+    public List<Intervention> getInterventions() {
+        return interventions;
+    }
     public void setDispo(boolean dispo) {
         this.dispo = dispo;
     }
@@ -50,7 +60,9 @@ public class Employe extends Personne {
     public void setHoraireSortie(int horaireSortie) {
         this.horaireSortie = horaireSortie;
     }
-    
-    
+
+    public void setInterventions(List<Intervention> interventions) {
+        this.interventions = interventions;
+    }
     
 }

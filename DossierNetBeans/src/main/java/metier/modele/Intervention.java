@@ -26,7 +26,10 @@ import javax.persistence.ManyToOne;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Intervention implements Serializable {
     @ManyToOne
-    private Personne unePersonne;
+    private Client unClient;
+    
+    @ManyToOne
+    private Employe unEmploye;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,8 +56,9 @@ public abstract class Intervention implements Serializable {
      //*****************************************************
     //A enlever 
      //***************************************************
-    public void ajouterPersonne(Personne p){
-        unePersonne=p;
+    public void ajouterPersonne(Client c, Employe e){
+        unClient=c;
+        unEmploye=e;
     }
     
     public Integer getId() {

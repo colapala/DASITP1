@@ -79,18 +79,20 @@ public class test {
 
         //initPersonnes(em);
         Date d=new Date();
-        Client p2 = new Client(true, "DELAPIERRE", "ROGER", "motdepasse", "adresse", "063256585", "mail@mail.com",d);
+        Client p2 = new Client(false, "DELAPIERRE", "ROGER", "motdepasse", "adresse", "063256585", "mail@mail.com",d);
+        Client p1 = new Client(false, "Anouchka", "ANDRE", "mdp", "rue de la Paix", "0695666406", "googlemail@mail.com",d);
         Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "present", "adresse", "063256585", "mail@mail.com",true,100,10);
         InterventionAnimal A1=new InterventionAnimal("hot-dog","scoubidou");
         InterventionLivraison L1=new InterventionLivraison("colis","Entreprise","colis non livré");
         InterventionIncident I1=new InterventionIncident("j'ai un probleme");
         //test des relations
-        I1.ajouterPersonne(p2);
-        L1.ajouterPersonne(p2);
+        I1.ajouterPersonne(p2,E2);
+        L1.ajouterPersonne(p1,E2);
         
         EntityTransaction tx = em.getTransaction();
             tx.begin();
             em.persist(p2);
+            em.persist(p1);
             em.persist(E2);
             em.persist(A1);
             em.persist(L1);

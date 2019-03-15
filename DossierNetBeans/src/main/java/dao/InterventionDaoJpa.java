@@ -4,7 +4,10 @@
  * and open the template in the editor.
  */
 package dao;
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import metier.modele.Employe;
 import metier.modele.Intervention;
 import metier.modele.Personne;
 
@@ -14,7 +17,7 @@ import metier.modele.Personne;
  */
 public class InterventionDaoJpa{
     
-    public void creeIntervention(Intervention i){
+    public void creerIntervention(Intervention i){
         EntityManager em=JpaUtil.obtenirEntityManager();
         try {
             em.persist(i);
@@ -27,9 +30,9 @@ public class InterventionDaoJpa{
         String jpql = "Select i from Intervention i where i.[...]=:id";
         Query requete=em.createQuery(jpql);
         requete.setParameter("id",p.getId());
-        List<Intervention> result=null; //peut faire ça pr une liste ?
+        List<Intervention> result=null; //peut faire ça pr une liste ? ---> je crois que tu peux l'initialiser avec list = new ArrayList <intervention> ()
         try{
-            result=(List<Intervention>) query.getResultList();
+            result=(List<Intervention>) requete.getResultList();
         } catch (Exception e) {
         }
         return result;
@@ -42,13 +45,13 @@ public class InterventionDaoJpa{
         requete.setParameter("id",emp.getId());
         Intervention result=null;
         try{
-            result=(Intervention) query.getSingleResult();
+            result=(Intervention) requete.getSingleResult();
         } catch (Exception e) {
         }
         return result;
     } 
     
-    public void modifierIntervention(Intervention i) //Pour le cas où on change son statut
+    public void modifierIntervention(Intervention i){ //Pour le cas où on change son statut
         EntityManager em=JpaUtil.obtenirEntityManager();
         try {
             em.merge(i);

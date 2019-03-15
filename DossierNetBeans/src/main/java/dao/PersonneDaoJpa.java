@@ -5,6 +5,9 @@
  */
 package dao;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import metier.modele.Employe;
+import metier.modele.Intervention;
 import metier.modele.Personne;
 
 /**
@@ -58,6 +61,7 @@ public class PersonneDaoJpa{
             result=(Employe) requete.getSingleResult();
         } catch (Exception e){
         }
+        return result;
     }
     
     

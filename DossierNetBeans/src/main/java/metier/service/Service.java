@@ -28,6 +28,7 @@ public class Service{
 	PersonneDaoJpa pdj;
 	InterventionDaoJpa idj;
 
+        //pas besoin de constructeur normalement
 	//Constructeur
 	Service(){
 		pdj = new PersonneDaoJpa();
@@ -47,9 +48,9 @@ public class Service{
 	public boolean SeInscrire(boolean civilite, String nom, String prenom, String motDePasse, String adressePostale, String tel, String mail, Date dateDeNaissance){
 		Personne x = pdj.recupererPersonne(mail);
 		if (x==null){
-			if(8 < motDePasse.lenght() < 16){
+			if(8 < motDePasse.length() && motDePasse.length()< 16){
 				Client a = new Client (civilite, nom, prenom, motDePasse, adressePostale, tel, mail, dateDeNaissance);
-				pdj.creerPersone(a);
+				pdj.creerPersonne(a);
 				return true;
 			}
 			else{
@@ -85,7 +86,7 @@ public class Service{
 	}
 	//Im guessing recuperListeIntervention could get the intervention of clients and employes
 	public List<Intervention> ConsulterHistorique(Personne p){
-		return idj.recuperer(p);
+		return idj.recupererListeIntervention(p);
 	}
 	
 	public void AfficherHistorique (List<Intervention> listint){
@@ -99,7 +100,8 @@ public class Service{
 		i.setStatus(status);
 		i.setHeureDeFin(heureDefin);
 		i.setCommentaire(commentaire);
-		idj.modifierIntervention(i);	
+		idj.modifierIntervention(i);
+                return true;
 	}
 
 	public Intervention RechercherIntervetnionEnCours(Employe emp){
@@ -109,15 +111,18 @@ public class Service{
 	public void AfficherIntervention( Intervention i){
 		int type = i.getType();
 		String description = i.getDescription();
-		String status = i.getStatus();
+		int status = i.getStatus(); //int ?
+                //on pourrait faire un switch, ce serait un peu mieux
 		if (type == 1){
 			System.out.println ("Intervention Animal");
 		}
 		else if(type == 2){
 			System.out.println ("Intervention Livraison");
 		}
-		else{
+                else if (type==3){
 			System.out.println ("Intervention Incident");
+                }else{
+                    System.out.println ("Erreur, nombre invalide");
 		}
 		System.out.println("desc: " + description + "/n" + "status: " + status + "/n");
 	}

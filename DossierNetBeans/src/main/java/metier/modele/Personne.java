@@ -24,8 +24,8 @@ import javax.persistence.Transient;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Personne implements Serializable {
-    @OneToMany(mappedBy="unePersonne")
-    private List<Intervention> interventions;
+   // @OneToMany(mappedBy="unePersonne")
+    //private List<Intervention> interventions;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -58,11 +58,8 @@ public abstract class Personne implements Serializable {
         this.adressePostale = adressePostale;
         this.tel = tel;
         this.mail = mail;
-        this.interventions=new ArrayList<Intervention>();
     }
-   
-
-
+ 
     public void setCivilite(boolean civilite) {
         this.civilite = civilite;
     }
@@ -89,10 +86,6 @@ public abstract class Personne implements Serializable {
 
     public void setMail(String mail) {
         this.mail = mail;
-    }
-    
-    public void setInterventions(List<Intervention> interventions) {
-        this.interventions = interventions;
     }
 
     public void setLatitude(Float latitude) {
@@ -133,10 +126,6 @@ public abstract class Personne implements Serializable {
 
     public String getMail() {
         return mail;
-    }
-
-    public List<Intervention> getInterventions() {
-        return interventions;
     }
 
     public Float getLatitude() {
