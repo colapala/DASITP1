@@ -38,7 +38,7 @@ public class Service{
 	public boolean SeConnecter(String mail, String motdepasse){
 		Personne a = pdj.recupererPersonne(mail);
 		if (a!=null){
-			if (a.getMotDePasse()== motdepasse){
+			if (a.getMotDePasse()== motdepasse){ // a.getMotDePasse().equals(motdepasse)?
 				return true;
 			}
 		}
@@ -130,7 +130,6 @@ public class Service{
 
 	//main to check things
 	public static void main(String[] args){
-
 		System.out.println ("Pruebas");
 	}
 
