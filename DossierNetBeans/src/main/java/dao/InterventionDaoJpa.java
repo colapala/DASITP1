@@ -17,7 +17,7 @@ import metier.modele.Personne;
  */
 public class InterventionDaoJpa{
     
-    public void creerIntervention(Intervention i){
+    public static void creerIntervention(Intervention i){
         EntityManager em=JpaUtil.obtenirEntityManager();
         try {
             em.persist(i);
@@ -25,7 +25,7 @@ public class InterventionDaoJpa{
         }
     }
     
-    public List<Intervention> recupererListeIntervention(Personne p){
+    public static List<Intervention> recupererListeIntervention(Personne p){
         EntityManager em=JpaUtil.obtenirEntityManager();
         String jpql = "Select i from Intervention i where i.[...]=:id";
         Query requete=em.createQuery(jpql);
@@ -38,7 +38,7 @@ public class InterventionDaoJpa{
         return result;
     }
     
-    public Intervention recupererInterventionEnCours(Employe emp){ //Requete à compléter selon les attributs de Intervention dans la bdd
+    public static Intervention recupererInterventionEnCours(Employe emp){ //Requete à compléter selon les attributs de Intervention dans la bdd
         EntityManager em=JpaUtil.obtenirEntityManager();
         String jpql = "Select i from Intervention i where i.[...]=:id and i.statut=0"; 
         Query requete=em.createQuery(jpql);
@@ -51,7 +51,7 @@ public class InterventionDaoJpa{
         return result;
     } 
     
-    public void modifierIntervention(Intervention i){ //Pour le cas où on change son statut
+    public static void modifierIntervention(Intervention i){ //Pour le cas où on change son statut
         EntityManager em=JpaUtil.obtenirEntityManager();
         try {
             em.merge(i);

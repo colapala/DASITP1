@@ -29,7 +29,7 @@ public class PersonneDaoJpa{
         JpaUtil.destroy();
     */
     
-    public void creerPersonne(Personne p){
+    public static void creerPersonne(Personne p){
         EntityManager em=JpaUtil.obtenirEntityManager();
         try {
             em.persist(p);
@@ -37,7 +37,7 @@ public class PersonneDaoJpa{
         }
     }
     
-    public Personne recupererPersonne(String mail){
+    public static Personne recupererPersonne(String mail){
         EntityManager em=JpaUtil.obtenirEntityManager();
         String jpql= "Select p from Personne p where p.mail=:email";
         Query requete=em.createQuery(jpql);
@@ -51,7 +51,7 @@ public class PersonneDaoJpa{
     }
     
     //Pas sure de la structure : requete à compléter quand on aura vu comment on fonctionne ac le truc de google maps
-    public Employe trouverEmployeDispo(Intervention i){ 
+    public static Employe trouverEmployeDispo(Intervention i){ 
         EntityManager em=JpaUtil.obtenirEntityManager();
         String jpql= "Select p1 from Personne p1, Personne p2, Intervention i where i.[...]=:id and i.[...]=p2.[...]and [p1.lat p2.lat p1.long p2.long etc] ";
         Query requete=em.createQuery(jpql);
