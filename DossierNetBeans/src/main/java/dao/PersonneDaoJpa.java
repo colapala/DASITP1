@@ -65,6 +65,6 @@ public class PersonneDaoJpa{
     }
     
     
-    //Besoin de pouvoir trouver une Personne à partir d'une intervention ?
+    //Besoin de pouvoir trouver une Personne à partir d'une intervention ? oui pour trouver les coordonnées du client quand l'employé clôture une intervention
     
 }

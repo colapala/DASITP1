@@ -27,10 +27,10 @@ public class InterventionDaoJpa{
     
     public static List<Intervention> recupererListeIntervention(Personne p){
         EntityManager em=JpaUtil.obtenirEntityManager();
-        String jpql = "Select i from Intervention i where i.[...]=:id";
+        String jpql = "Select i from Intervention i where i.unclient_id=:id";//or i.UNEMPLOYE_ID=:id";
         Query requete=em.createQuery(jpql);
         requete.setParameter("id",p.getId());
-        List<Intervention> result=null; //peut faire ça pr une liste ? ---> je crois que tu peux l'initialiser avec list = new ArrayList <intervention> ()
+        List<Intervention> result=null; //peut faire ça pr une liste ? 
         try{
             result=(List<Intervention>) requete.getResultList();
         } catch (Exception e) {

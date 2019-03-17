@@ -35,13 +35,13 @@ public class Service{
 		idj = new InterventionDaoJpa();
 	}*/
 
-	public static boolean SeConnecter(String mail, String motdepasse){
-		Personne a =PersonneDaoJpa.recupererPersonne(mail);
+	public static Personne SeConnecter(String mail, String motdepasse){
+		Personne a=PersonneDaoJpa.recupererPersonne(mail);
 		if (a!=null){
-			if (a.getMotDePasse().equals(motdepasse))//a.getMotDePasse()== motdepasse){ // a.getMotDePasse().equals(motdepasse)?
-				return true;
+			if (a.getMotDePasse().equals(motdepasse))//a.getMotDePasse()== motdepasse){ 
+				return a;
 		}
-		return false;
+                return null;
 	}
 
 	public static boolean SeInscrire(boolean civilite, String nom, String prenom, String motDePasse, String adressePostale, String tel, String mail, Date dateDeNaissance){
