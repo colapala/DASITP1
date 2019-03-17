@@ -79,9 +79,9 @@ public class test {
 
         //initPersonnes(em);
         Date d=new Date();
-        Client p2 = new Client(false, "DELAPIERRE", "ROGER", "motdepasse", "adresse", "063256585", "mail@mail.com",d);
-        Client p1 = new Client(false,"ANDRE","Anouchka", "mdp", "rue de la Paix", "0695666406", "googlemail@mail.com",d);
-        Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "present", "adresse", "063256585", "mail@mail.com",true,100,10);
+        Client p2 = new Client(false, "DELAPIERRE", "ROGER", "motdepasse", "15 Rue Ampère, Paris", "063256585", "mail1@mail.com",d);
+        Client p1 = new Client(false,"ANDRE","Anouchka", "mdp", "15 Rue de la Paix, Paris", "0695666406", "googlemail@mail.com",d);
+        Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "present", "15 rue René, villeurbanne", "063256585", "mail2@mail.com",true,100,10);
         InterventionAnimal A1=new InterventionAnimal("hot-dog","scoubidou");
         InterventionLivraison L1=new InterventionLivraison("colis","Entreprise","colis non livré");
         InterventionIncident I1=new InterventionIncident("j'ai un probleme");

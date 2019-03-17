@@ -5,17 +5,17 @@
  */
 package metier.modele;
 
+import com.google.maps.model.LatLng;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import util.GeoTest;
+import static util.GeoTest.getLatLng;
 
 /**
  *
@@ -24,9 +24,7 @@ import javax.persistence.Transient;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class Personne implements Serializable {
-   // @OneToMany(mappedBy="unePersonne")
-    //private List<Intervention> interventions;
-    
+ 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -43,8 +41,8 @@ public abstract class Personne implements Serializable {
     private String mail;
     
     //A calculer à partir de l'adresse
-    private Float latitude;
-    private Float longitude;
+    private double latitude;
+    private double longitude;
     
 
     public Personne() {
@@ -58,6 +56,9 @@ public abstract class Personne implements Serializable {
         this.adressePostale = adressePostale;
         this.tel = tel;
         this.mail = mail;
+        LatLng GPS=GeoTest.getLatLng(adressePostale);
+        longitude=GPS.lng;
+        latitude=GPS.lat;
     }
  
     public void setCivilite(boolean civilite) {
@@ -128,11 +129,11 @@ public abstract class Personne implements Serializable {
         return mail;
     }
 
-    public Float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public Float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
