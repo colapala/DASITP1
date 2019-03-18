@@ -64,13 +64,31 @@ public class Main {
         System.out.println("--------------------");
         System.out.println("Bienvenue sur ProAct'IF");
         System.out.println("--------------------");
-        System.out.println("choisir une option:");
+        System.out.println("Choisir une option:");
         System.out.println("1.Se connecter");
         System.out.println("2.S'inscrire");
         System.out.println();
     }
+    
+    public static void AffichageMenuClient(){
+        System.out.println("Choisir une option:");
+        System.out.println("3.Demander une intervention");
+        System.out.println("4.Consulter Historique");
+        System.out.println();
+    }
+    
+     public static void AffichageMenuEmploye(){
+        System.out.println("Choisir une option:");
+        System.out.println("5.Cloturer l'intervention en cours");
+        System.out.println("6.Consulter Tableau de bord");
+        System.out.println();
+    }
+    
+    public static void AffichageOption(int option){
+    
+    }
      
-    public static void MainMenu(){
+    public static void LancerMenu(){
          AffichageMainMenu();
          int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
          switch(choix){
