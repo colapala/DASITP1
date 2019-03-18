@@ -5,6 +5,7 @@
  */
 package metier.service;
 
+import com.google.maps.model.LatLng;
 import dao.InterventionDaoJpa;
 import dao.PersonneDaoJpa;
 import java.util.Date;
@@ -17,6 +18,7 @@ import metier.modele.InterventionIncident;
 import metier.modele.InterventionLivraison;
 import metier.modele.Personne;
 import java.util.Date;
+import util.GeoTest;
 
 
 /**
@@ -46,21 +48,28 @@ public class Service{
 		Personne x = PersonneDaoJpa.recupererPersonne(mail);
 		if (x==null){
 			Date ahorita = new Date();
-			if(8 < motDePasse.length() && motDePasse.length()< 16 && nom.lenght()>0 && prenom.lenght()>0 && mail.lenght()>2 && mail.contains("@") &&
-			adressePostale.lenght()>0 && tel.lenght()>0 && ((ahorita.getTime() - dateDeNaissance.getTime()) > 16*365*24*60*60*1000)) {
+			if(8 < motDePasse.length() && motDePasse.length()< 16 && nom.length()>0 && prenom.length()>0 && mail.length()>2 && mail.contains("@") &&
+			adressePostale.length()>0 && tel.length()>0 && ((ahorita.getTime() - dateDeNaissance.getTime()) > 16*365*24*60*60*1000)) {
 				Client a = new Client (civilite, nom, prenom, motDePasse, adressePostale, tel, mail, dateDeNaissance);
 				PersonneDaoJpa.creerPersonne(a);
+                                calculerLatLng(a);
 				return a;
 			}
 		}
 		return null;
-	} 	
-
+	} 
+        
+        public static void calculerLatLng(Personne p){
+            LatLng GPS=GeoTest.getLatLng(p.getAdressePostale());
+            p.setLongitude(GPS.lng);
+            p.setLatitude(GPS.lat);
+        }
+        
 	// I have supposed you cannot have a intervetionanimal without an animal, because then it would be no diference to interventionIncident (sauf le type ;)
 	//the same with interventionlivraison
 	//actually, we dont even need the type but I'll leave it
 	public static Intervention DemanderIntervention(int type, String description){
-		if (type>= 0 && type <=3 && description.lenght()>0){
+		if (type>= 0 && type <=3 && description.length()>0){
 			InterventionIncident a = new InterventionIncident(description);
 			InterventionDaoJpa.creerIntervention(a);
 			return a;	
@@ -69,7 +78,7 @@ public class Service{
 	}
 
 	public static Intervention DemanderIntervention(int type, String description, String objet, String entreprise){
-		if (type>= 0 && type <=3 && description.lenght()>0 && objet.length()>0 && entreprise.length()>0){ 
+		if (type>= 0 && type <=3 && description.length()>0 && objet.length()>0 && entreprise.length()>0){ 
 			InterventionLivraison a = new InterventionLivraison(objet, entreprise, description);
 			InterventionDaoJpa.creerIntervention(a);
 			return a;
@@ -78,7 +87,7 @@ public class Service{
 	}
 
 	public static Intervention DemanderIntervention(int type, String description, String animal){
-		if (type>= 0 && type <=3 && description.lenght()>0 && objet.length()>0 && entreprise.length()>0){
+		if (type>= 0 && type <=3 && description.length()>0 && animal.length()>0 ){
 			InterventionAnimal a = new InterventionAnimal(animal, description);
 			InterventionDaoJpa.creerIntervention(a);
 			return a;
@@ -86,9 +95,9 @@ public class Service{
 		return null;
 	}
 	//Im guessing recuperListeIntervention could get the intervention of clients and employes
-	public static List<Intervention> ConsulterHistorique(Personne p){
-		return InterventionDaoJpa.recupererListeIntervention(p);
-	}
+	/*public static List<Intervention> ConsulterHistorique(Personne p){
+		return p.get();
+	}*/
 	
 	public static void AfficherHistorique (List<Intervention> listint){
 		for (Intervention i : listint){
@@ -98,7 +107,7 @@ public class Service{
 
 	public static boolean CloturerIntervention(Employe emp, int status, int heureDefin, String commentaire){
 		Intervention i = RechercherIntervetnionEnCours(emp);
-		if (status >= 0 && status <=3 && commentaire.lenght()>0 && heureDefin >= 0 && heureDefin < 24 && i != null){
+		if (status >= 0 && status <=3 && commentaire.length()>0 && heureDefin >= 0 && heureDefin < 24 && i != null){
 			i.setStatus(status);
 			i.setHeureDeFin(heureDefin);
 			i.setCommentaire(commentaire);
@@ -133,10 +142,5 @@ public class Service{
             }
 		System.out.println("status: " + status + "/n" + "desc: " + description + "/n" );
 	}
-
-
-	//main to check things
-	public static void main(String[] args){
-		//System.out.println ("Pruebas");
-	}
 }
+
