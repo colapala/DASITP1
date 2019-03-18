@@ -25,7 +25,7 @@ public class InterventionDaoJpa{
         }
     }
     
-    public static List<Intervention> recupererListeIntervention(Personne p){
+    /*public static List<Intervention> recupererListeIntervention(Personne p){
         EntityManager em=JpaUtil.obtenirEntityManager();
         String jpql = "Select i from Intervention i where i.unclient_id=:id";//or i.UNEMPLOYE_ID=:id";
         Query requete=em.createQuery(jpql);
@@ -36,7 +36,7 @@ public class InterventionDaoJpa{
         } catch (Exception e) {
         }
         return result;
-    }
+    }*/
     
     public static Intervention recupererInterventionEnCours(Employe emp){ //Requete à compléter selon les attributs de Intervention dans la bdd
         EntityManager em=JpaUtil.obtenirEntityManager();

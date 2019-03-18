@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 package dao;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import metier.modele.Client;
 import metier.modele.Employe;
 import metier.modele.Intervention;
 import metier.modele.Personne;
@@ -38,27 +40,27 @@ public class PersonneDaoJpa{
     }
     
     public static Personne recupererPersonne(String mail){
-        EntityManager em=JpaUtil.obtenirEntityManager();
+//        EntityManager em=JpaUtil.obtenirEntityManager();
         String jpql= "Select p from Personne p where p.mail=:email";
-        Query requete=em.createQuery(jpql);
+        Query requete=JpaUtil.obtenirEntityManager().createQuery(jpql);
         requete.setParameter("email",mail);
         Personne result=null;
         try{
             result=(Personne) requete.getSingleResult();
+          //  ((Client)result).getListInterventions().size();
         } catch (Exception e){
         }
         return result;
     }
     
     //Pas sure de la structure : requete à compléter quand on aura vu comment on fonctionne ac le truc de google maps
-    public static Employe trouverEmployeDispo(Intervention i){ 
+    public static List<Employe> trouverEmployeDispo(){ 
         EntityManager em=JpaUtil.obtenirEntityManager();
-        String jpql= "Select p1 from Personne p1, Personne p2, Intervention i where i.[...]=:id and i.[...]=p2.[...]and [p1.lat p2.lat p1.long p2.long etc] ";
+        String jpql= "Select e from Employe e where e.dispo=1";
         Query requete=em.createQuery(jpql);
-        requete.setParameter("id", i.getId());
-        Employe result=null;
+        List<Employe> result=null;
         try{
-            result=(Employe) requete.getSingleResult();
+            result=(List<Employe>) requete.getResultList();
         } catch (Exception e){
         }
         return result;
