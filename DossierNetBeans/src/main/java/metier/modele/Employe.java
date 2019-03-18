@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Employe extends Personne {
     @OneToMany(mappedBy="unEmploye")
-    private List<Intervention> interventions;
+    private List<Intervention> listInterventions;
     
     boolean dispo;
     int horaireEntree;
@@ -31,9 +31,14 @@ public class Employe extends Personne {
         this.dispo=dispo;
         this.horaireEntree=horaireEntree;
         this.horaireSortie=horaireSortie;
-        this.interventions=new ArrayList<Intervention>();
+        this.listInterventions=new ArrayList<Intervention>();
     }
 
+    public void AjouterIntervention(Intervention i){
+       listInterventions.add(i);
+       i.setUnEmploye(this);
+    }
+    
     public boolean isDispo() {
         return dispo;
     }
@@ -47,7 +52,7 @@ public class Employe extends Personne {
     }
     
     public List<Intervention> getInterventions() {
-        return interventions;
+        return listInterventions;
     }
     public void setDispo(boolean dispo) {
         this.dispo = dispo;
@@ -62,7 +67,7 @@ public class Employe extends Personne {
     }
 
     public void setInterventions(List<Intervention> interventions) {
-        this.interventions = interventions;
+        this.listInterventions = interventions;
     }
     
 }

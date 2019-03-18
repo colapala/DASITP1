@@ -7,6 +7,7 @@ package metier.modele;
 
 import com.google.maps.model.LatLng;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -56,9 +57,6 @@ public abstract class Personne implements Serializable {
         this.adressePostale = adressePostale;
         this.tel = tel;
         this.mail = mail;
-        LatLng GPS=GeoTest.getLatLng(adressePostale);
-        longitude=GPS.lng;
-        latitude=GPS.lat;
     }
  
     public void setCivilite(boolean civilite) {
@@ -135,6 +133,19 @@ public abstract class Personne implements Serializable {
 
     public double getLongitude() {
         return longitude;
+    }
+    
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
 }

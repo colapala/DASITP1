@@ -53,13 +53,6 @@ public abstract class Intervention implements Serializable {
         this.description = description;
     }
 
-     //*****************************************************
-    //A enlever 
-     //***************************************************
-    public void ajouterPersonne(Client c, Employe e){
-        unClient=c;
-        unEmploye=e;
-    }
     
     public Integer getId() {
         return id;
@@ -112,5 +105,21 @@ public abstract class Intervention implements Serializable {
     public void setHorodate(Date horodate) {
         this.horodate = horodate;
     } 
+
+    public Client getUnClient() {
+        return unClient;
+    }
+
+    public void setUnClient(Client unClient) {
+        this.unClient = unClient;
+    }
+
+    public Employe getUnEmploye() {
+        return unEmploye;
+    }
+
+    public void setUnEmploye(Employe unEmploye) {
+        this.unEmploye = unEmploye;
+    }
     
 }

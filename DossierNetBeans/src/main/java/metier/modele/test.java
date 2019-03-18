@@ -21,8 +21,9 @@ import javax.persistence.Query;
  * @author Claharotte
  */
 public class test {
+}
 
-    public final static String NOM_PERSISTENCE = "TPDASIPU";
+    /*public final static String NOM_PERSISTENCE = "TPDASIPU";
 
     public static void afficher(Personne p) {
         System.out.println(p.getNom() + " " + p.getPrenom());
@@ -67,12 +68,12 @@ public class test {
         Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "motdepasse", "adresse", "063256585", "mail@mail.com",true,100,10);
         savePersonne(em, p2);
         savePersonne(em, E2);
-    }
+    }*/
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(NOM_PERSISTENCE);
         EntityManager em = emf.createEntityManager();
@@ -105,4 +106,4 @@ public class test {
         em.close();
     }
 
-}
+}*/
