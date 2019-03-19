@@ -68,27 +68,30 @@ public class Service{
 	// I have supposed you cannot have a intervetionanimal without an animal, because then it would be no diference to interventionIncident (sauf le type ;)
 	//the same with interventionlivraison
 	//actually, we dont even need the type but I'll leave it
-	public static Intervention DemanderIntervention(int type, String description){
+	public static Intervention DemanderIntervention(Client c,int type, String description){
 		if (type>= 0 && type <=3 && description.length()>0){
 			InterventionIncident a = new InterventionIncident(description);
+                        c.ajouterIntervention(a);
 			InterventionDaoJpa.creerIntervention(a);
 			return a;	
 		}
 		return null;
 	}
 
-	public static Intervention DemanderIntervention(int type, String description, String objet, String entreprise){
+	public static Intervention DemanderIntervention(Client c,int type, String description, String objet, String entreprise){
 		if (type>= 0 && type <=3 && description.length()>0 && objet.length()>0 && entreprise.length()>0){ 
 			InterventionLivraison a = new InterventionLivraison(objet, entreprise, description);
+                        c.ajouterIntervention(a);
 			InterventionDaoJpa.creerIntervention(a);
 			return a;
 		}
 		return null;
 	}
 
-	public static Intervention DemanderIntervention(int type, String description, String animal){
+	public static Intervention DemanderIntervention(Client c,int type, String description, String animal){
 		if (type>= 0 && type <=3 && description.length()>0 && animal.length()>0 ){
 			InterventionAnimal a = new InterventionAnimal(animal, description);
+                        c.ajouterIntervention(a);
 			InterventionDaoJpa.creerIntervention(a);
 			return a;
 		}
