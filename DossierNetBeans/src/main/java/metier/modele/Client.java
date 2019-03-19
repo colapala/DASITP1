@@ -35,7 +35,7 @@ public class Client extends Personne {
         this.listInterventions=new ArrayList<Intervention>();
     }
 
-    public void AjouterIntervention(Intervention i){
+    public void ajouterIntervention(Intervention i){
        listInterventions.add(i);
        i.setUnClient(this);
     }
