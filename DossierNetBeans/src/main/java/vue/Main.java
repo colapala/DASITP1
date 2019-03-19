@@ -23,7 +23,6 @@ import metier.modele.InterventionAnimal;
 import metier.modele.InterventionIncident;
 import metier.modele.InterventionLivraison;
 import metier.modele.Personne;
-import static metier.modele.test.NOM_PERSISTENCE;
 import metier.service.Service;
 import util.Saisie;
 
@@ -33,6 +32,7 @@ import util.Saisie;
  * classe qui permet de faire l'interface utilisateur
  */
 public class Main {
+    public final static String NOM_PERSISTENCE = "TPDASIPU";
     
     public static void Remplir(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(NOM_PERSISTENCE);
@@ -46,9 +46,9 @@ public class Main {
         InterventionIncident I1=new InterventionIncident("j'ai un probleme");
         
         //test des relations
-        p2.AjouterIntervention(I1);
-        p2.AjouterIntervention(A1);
-        E2.AjouterIntervention(L1);
+        p2.ajouterIntervention(I1);
+        p2.ajouterIntervention(A1);
+        E2.ajouterIntervention(L1);
          
         EntityTransaction tx = em.getTransaction();
             tx.begin();
@@ -117,11 +117,18 @@ public class Main {
         JpaUtil.creerEntityManager();
         JpaUtil.ouvrirTransaction();
         
-        //services testés
+        //services testés :
         //-SeConnecter
         //-SeInscrire
         //-getListInterventions
+        //-Demander interventions
+        //-recupérer les employés dispo
  
+        Client c=(Client)PersonneDaoJpa.recupererPersonne("mail1@mail.com");
+        System.out.println(c);
+        Service.DemanderIntervention(c,2,"j'ai pas touché", "colis", "amazon");
+        Service.DemanderIntervention(c,2,"je ne crois pas qu'il y ai de bonne ou de mauvaise situation... si je devais résumer ma vie avec vous, je dirai que c'est d'abord des rencontres, des gens qui m'ont tendu la main à un moment où je ne pouvais pas, ou j'étais seul chez moi ...et c'est assez bizarre de se dire que les hasards, les rencontres forgent une destinée ...parce que quand on a le goût de la chose , ..le goût de la chose bien faite, le beau geste ...on ne trouve pas toujours l'interlocuteur en face, je dirai le miroir qui nous aide à avancer..");
+        Service.DemanderIntervention(c,2,"mon chien s'est fait écraser", "compote");
         
         JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();
