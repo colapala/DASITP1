@@ -54,7 +54,7 @@ public class PersonneDaoJpa{
     }
     
     //Pas sure de la structure : requete à compléter quand on aura vu comment on fonctionne ac le truc de google maps
-    public static List<Employe> trouverEmployeDispo(){ 
+    public static List<Employe> trouverListeEmployeDispo(){ 
         EntityManager em=JpaUtil.obtenirEntityManager();
         String jpql= "Select e from Employe e where e.dispo=1";
         Query requete=em.createQuery(jpql);

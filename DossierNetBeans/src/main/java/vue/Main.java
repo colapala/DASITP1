@@ -57,9 +57,16 @@ public class Main {
         Client c=(Client)PersonneDaoJpa.recupererPersonne("mail1@mail.com");
         System.out.println(c);
         Service.DemanderIntervention(c,2,"j'ai pas touché", "colis", "amazon");
-        Service.DemanderIntervention(c,2,"je ne crois pas qu'il y ai de bonne ou de mauvaise situation... si je devais résumer ma vie avec vous, je dirai que c'est d'abord des rencontres, des gens qui m'ont tendu la main à un moment où je ne pouvais pas, ou j'étais seul chez moi ...et c'est assez bizarre de se dire que les hasards, les rencontres forgent une destinée ...parce que quand on a le goût de la chose , ..le goût de la chose bien faite, le beau geste ...on ne trouve pas toujours l'interlocuteur en face, je dirai le miroir qui nous aide à avancer..");
+        //Service.DemanderIntervention(c,2,"je ne crois pas qu'il y ai de bonne ou de mauvaise situation... si je devais résumer ma vie avec vous, je dirai que c'est d'abord des rencontres, des gens qui m'ont tendu la main à un moment où je ne pouvais pas, ou j'étais seul chez moi ...et c'est assez bizarre de se dire que les hasards, les rencontres forgent une destinée ...parce que quand on a le goût de la chose , ..le goût de la chose bien faite, le beau geste ...on ne trouve pas toujours l'interlocuteur en face, je dirai le miroir qui nous aide à avancer..");
         Service.DemanderIntervention(c,2,"mon chien s'est fait écraser", "compote");
         
+        /*A Faire:
+        -trouver l'employé le plus proche du client 
+        -service tableau de bord
+        -service consulter historique
+        
+        Je pense qu'il faut que DemanderInterventiuon prenne un employé en entrée aussi
+        */
         JpaUtil.validerTransaction();
         JpaUtil.fermerEntityManager();
         JpaUtil.destroy();
@@ -119,23 +126,41 @@ public class Main {
         System.out.println("2.Consulter Tableau de bord");
         System.out.println();
     }
-    
+ 
+     public static void AffichageHistorique(){
+         
+     }
+     
+     public static void AffichageTableaudeBord(){
+         
+     }
+     
   public static void LancerMenuPrincipal(Personne p){
          AffichageMainMenu();
          int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
          switch(choix){
              case 1:
+             {
                  String mail = Saisie.lireChaine("Mail : ");
                  String motDePasse = Saisie.lireChaine("Mot de passe : ");
-		 p=Service.SeConnecter(mail, motdepasse);
+		 p=Service.SeConnecter(mail, motDePasse);
                  while(p==null){
 			System.out.println("Erreur lors de la connexion \n\n");
-			LancerMenuPrincipal();
+			LancerMenuPrincipal(p);
 		}
-		 LancerMenuEmploye();
+		 if (p instanceof Employe){
+			LancerMenuEmploye((Employe)p);
+		 } else if ( p instanceof Client){
+			LancerMenuClient((Client)p);
+		 }
                  break;
+             }
              case 2: 
-                 int civilite = Saisie.lireInteger("Civilité (1=Mme, 2=Mr) : ");
+                 int madame = Saisie.lireInteger("Civilité (0=Mme, 1=Mr) : ",Arrays.asList(0,1));
+                 boolean civilite=false;
+                    if (madame==1){
+                        civilite=true;
+                    }   
                  String nom = Saisie.lireChaine("Nom : ");
                  String prenom = Saisie.lireChaine("Prenom : ");
                  String mdp = Saisie.lireChaine("Mot de passe : ");
@@ -143,17 +168,20 @@ public class Main {
                  String tel = Saisie.lireChaine("Tel : ");
                  String mail = Saisie.lireChaine("Mail : ");
 		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                 try{
                  String dateNaiss = Saisie.lireChaine("Date de naissance (dd/MM/yyyy) : ");
 		 Date date = sdf.parse(dateNaiss);
 		 p=Service.SeInscrire(civilite, nom, prenom, mdp, addpost, tel, mail, date);
+                 }catch(Exception e){
+                 }
 		 while(p==null){
 			System.out.println("Erreur : L'inscription n'a pas pu être réalisée (champ vide ou mail déjà utilisé \n\n");
-			LancerMenuPrincipal();
+			LancerMenuPrincipal(p);
 		 } 
 		 if (p instanceof Employe){
-			LancerMenuEmploye(p)
+			LancerMenuEmploye((Employe)p);
 		 } else if ( p instanceof Client){
-			LancerMenuClient(p);
+			LancerMenuClient((Client)p);
 		 }
                  break;
            }
@@ -164,17 +192,17 @@ public class Main {
             int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
             switch(choix){
                 case 1:
-                    int status = Saisie.lireInteger("Statut (1=Succès, 2=Echec) : ");
+                    int status = Saisie.lireInteger("Statut (1=Succès, 2=Echec) : ",Arrays.asList(1,2));
                     int heureDeFin = Saisie.lireInteger("Heure de fin : ");
 		    String commentaire = Saisie.lireChaine("Commentaire : ");
-                    while((CloturerIntervention(status,heureDeFin,commentaire))==null){
+                    while((Service.CloturerIntervention(e,status,heureDeFin,commentaire))==false){
 			System.out.println("Erreur : La cloture n'a pas pu être réalisée \n\n");
 		    }
-		    LancerMenuEmploye();
+		    LancerMenuEmploye(e);
                     break;
                 case 2: 
-		    ConsulterTableauDeBord(e);
-		    LancerMenuEmploye();
+		    //ConsulterTableauDeBord(e);
+		    LancerMenuEmploye(e);
 	    }
 	}
 	
@@ -183,30 +211,42 @@ public class Main {
             int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
             switch(choix){
                 case 1:
-		    Intervention tmp;
-                    int type = Saisie.lireChaine("Statut (1=Animal, 2=Livraison, 3=Incident) : ");
-	            if (type==1){
-			 String animal = Saisie.lireChaine("Animal : "); 
-			 String description = Saisie.lireChaine("Description: ");
-			 tmp=DemanderIntervention(c,type,description,animal);
-		    } else if (type==2){
-			 String objet = Saisie.lireChaine("Objet : "); 
-			 String entreprise = Saisie.lireChaine("Entreprise : ");
-			 String description = Saisie.lireChaine("Description: ");
-			 tmp=DemanderIntervention(c,type,description,objet, entreprise);
-		    } else if(type==3){
-			 String description = Saisie.lireChaine("Description: ");
-			 tmp=DemanderIntervention(c,type,description);
-		    }
+		    Intervention tmp=null;
+                    int type = Saisie.lireInteger("Statut (1=Animal, 2=Livraison, 3=Incident) : ",Arrays.asList(1,2,3));
+            switch (type) {
+                case 1:
+                    {
+                        String animal = Saisie.lireChaine("Animal : ");
+                        String description = Saisie.lireChaine("Description: ");
+                        tmp=Service.DemanderIntervention(c,type,description,animal);
+                        break;
+                    }
+                case 2:
+                    {
+                        String objet = Saisie.lireChaine("Objet : ");
+                        String entreprise = Saisie.lireChaine("Entreprise : ");
+                        String description = Saisie.lireChaine("Description: ");
+                        tmp=Service.DemanderIntervention(c,type,description,objet, entreprise);
+                        break;
+                    }
+                case 3:
+                    {
+                        String description = Saisie.lireChaine("Description: ");
+                        tmp=Service.DemanderIntervention(c,type,description);
+                        break;
+                    }
+                default:
+                    break;
+            }
 				 
-                    while(tmp==null){
+                    while(tmp==null){ //if plutot ? 
 			System.out.println("Erreur : la demande d'intervention n'est pas possible (champ vide ou pas d'employe disponible)");
                     }
-   		    LancerMenuClient();
+   		    LancerMenuClient(c);
                     break;
                 case 2: 
-		     ConsulterHistorique(c);
-		     LancerMenuCLient();
+		     //ConsulterHistorique(c);
+		     LancerMenuClient(c);
 	   }
       }
 }

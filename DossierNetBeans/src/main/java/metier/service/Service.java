@@ -107,6 +107,22 @@ public class Service{
 			AfficherIntervention(i);
 		}
 	}
+        
+        public static Employe trouverEmploye(Intervention i, Client c){
+            List <Employe> list=PersonneDaoJpa.trouverListeEmployeDispo();
+            Employe employeSelect=null;
+            double min=1000000000;
+            LatLng clientGPS=new LatLng(c.getLatitude(),c.getLongitude());
+            for (Employe e : list){
+                        LatLng employeGPS=new LatLng(e.getLatitude(),e.getLongitude());
+			double tempsTrajet=GeoTest.getTripDurationByBicycleInMinute(clientGPS,employeGPS);
+                        if(tempsTrajet<min){
+                            min=tempsTrajet;
+                            employeSelect=e;
+                        }
+		}
+            return employeSelect;
+        }
 
 	public static boolean CloturerIntervention(Employe emp, int status, int heureDefin, String commentaire){
 		Intervention i = RechercherIntervetnionEnCours(emp);
