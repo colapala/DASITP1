@@ -11,6 +11,7 @@ import dao.PersonneDaoJpa;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -134,7 +135,6 @@ public class Main {
 		 LancerMenuEmploye();
                  break;
              case 2: 
-		//Probleme avec la date 
                  int civilite = Saisie.lireInteger("Civilité (1=Mme, 2=Mr) : ");
                  String nom = Saisie.lireChaine("Nom : ");
                  String prenom = Saisie.lireChaine("Prenom : ");
@@ -142,8 +142,10 @@ public class Main {
                  String addpost = Saisie.lireChaine("Adresse postale : ");
                  String tel = Saisie.lireChaine("Tel : ");
                  String mail = Saisie.lireChaine("Mail : ");
-                 Date datenaiss = Saisie.lireChaine("Date de naissance : ");
-		 p=Service.SeInscrire(civilite, nom, prenom, mdp, addpost, tel, mail, datenaiss);
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                 String dateNaiss = Saisie.lireChaine("Date de naissance (dd/MM/yyyy) : ");
+		 Date date = sdf.parse(dateNaiss);
+		 p=Service.SeInscrire(civilite, nom, prenom, mdp, addpost, tel, mail, date);
 		 while(p==null){
 			System.out.println("Erreur : L'inscription n'a pas pu être réalisée (champ vide ou mail déjà utilisé \n\n");
 			LancerMenuPrincipal();
