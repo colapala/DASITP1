@@ -310,7 +310,7 @@ public class Main {
 		    lancerMenuEmploye(e);
                     break;
                 case 2: 
-		    afficherListeInterventions(e.getListInterventions());
+		    afficherListeInterventions(Service.recupererTableauDeBord(e));
 		    lancerMenuEmploye(e);
 	    }
 	}
