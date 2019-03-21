@@ -19,6 +19,7 @@ import metier.modele.InterventionLivraison;
 import metier.modele.Personne;
 import java.util.Date;
 import util.GeoTest;
+import util.Message;
 
 public class Service{
 
@@ -39,14 +40,28 @@ public class Service{
 		Personne x = PersonneDaoJpa.recupererPersonne(mail);
 		if (x==null){
 			Date ahorita = new Date();
+			
 			if(8 < motDePasse.length() && motDePasse.length()< 16 && nom.length()>0 && prenom.length()>0 && mail.length()>2 && mail.contains("@") &&
 			adressePostale.length()>0 && tel.length()>0 && ((ahorita.getTime() - dateDeNaissance.getTime()) > 16*365*24*60*60*1000)) {
+				
+				//Création et persistence d'un nouveau client
 				Client a = new Client (civilite, nom, prenom, motDePasse, adressePostale, tel, mail, dateDeNaissance);
 				PersonneDaoJpa.creerPersonne(a);
                                 calculerLatLng(a);
+				
+				//Envoi de mail de confirmation d'inscription
+				String message="Bonjour "+prenom+", nous vous confirmons votre inscription au service PROACT'IF.";
+				Message.envoyerMail("contact@proac.if", mail, "Bienvenue chez PROACT'IF", message);
+				
 				return a;
+
 			}
 		}
+		
+		//Envoie de mail pour informer de l'échec de l'inscription
+		String message="Bonjour "+prenom+",  votre inscription a échoué, veuillez recommencer ultérieurement.";
+		Message.envoyerMail("contact@proac.if", mail, "Bienvenue chez PROACT'IF", message);
+		
 		return null;
 	} 
         
@@ -54,12 +69,19 @@ public class Service{
 	public static Employe DemanderIntervention(Client c,int type, String description){
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0){
+			
+			//Création et persistence de l'intervention
 			InterventionIncident a = new InterventionIncident(description);
                         a.setHorodate(new  Date());
                         c.ajouterIntervention(a);
                         employeTrouve.ajouterIntervention(a);
                         employeTrouve.setDispo(false);
 			InterventionDaoJpa.creerIntervention(a);
+			
+			//Envoi d'une notification à l'employé trouvé
+			String message = "Intervention Animal demandee pour " +c.getPrenom()+ " " +c.getNom()+ ", " +c.getAdressePostale()+ ". Commentaire : " +description;			
+			Message.envoyerNotification(employeTrouve.getNom(), employeTrouve.getPrenom(), employeTrouve.getTel(), message);
+			
 			return employeTrouve;	
 		}
 		return null;
@@ -69,12 +91,19 @@ public class Service{
 	public static Employe DemanderIntervention(Client c,int type, String description, String objet, String entreprise){
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0 && objet.length()>0 && entreprise.length()>0){ 
+			
+			//Creation et persistence de l'intervention
 			InterventionLivraison a = new InterventionLivraison(objet, entreprise, description);
                         a.setHorodate(new  Date());
                         c.ajouterIntervention(a);
                         employeTrouve.ajouterIntervention(a);
                         employeTrouve.setDispo(false);
 			InterventionDaoJpa.creerIntervention(a);
+			
+			//Envoi d'une notification à l'employé trouvé
+			String message = "Intervention Livraison demandee pour " +c.getPrenom()+ " " +c.getNom()+ ", " +c.getAdressePostale()+ ". Commentaire : " +description;			
+			Message.envoyerNotification(employeTrouve.getNom(), employeTrouve.getPrenom(), employeTrouve.getTel(), message);
+			
 			return employeTrouve;
 		}
 		return null;
@@ -84,12 +113,19 @@ public class Service{
 	public static Employe DemanderIntervention(Client c,int type, String description, String animal){
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0 && animal.length()>0 ){
+			
+			//Creation et persistence de l'intervention
 			InterventionAnimal a = new InterventionAnimal(animal, description);
                         a.setHorodate(new  Date());
                         c.ajouterIntervention(a);
                         employeTrouve.ajouterIntervention(a);
                         employeTrouve.setDispo(false);
 			InterventionDaoJpa.creerIntervention(a);
+			
+			//Envoi d'une notification à l'employé trouvé
+			String message = "Intervention Incident demandee pour " +c.getPrenom()+ " " +c.getNom()+ ", " +c.getAdressePostale()+ ". Commentaire : " +description;			
+			Message.envoyerNotification(employeTrouve.getNom(), employeTrouve.getPrenom(), employeTrouve.getTel(), message);			
+			
 			return employeTrouve;
 		}
 		return null;
@@ -125,12 +161,20 @@ public class Service{
 	public static boolean cloturerIntervention(Employe emp, int status, int heureDefin, String commentaire){
 		Intervention i = RechercherIntervetnionEnCours(emp);
 		if (status >= 0 && status <=3 && commentaire.length()>0 && heureDefin >= 0 && heureDefin <= 24 && i != null){
+			
+			//Modification de l'intervention
 			i.setStatus(status);
 			i.setHeureDeFin(heureDefin);
 			i.setCommentaire(commentaire);
 			InterventionDaoJpa.modifierIntervention(i);
+			
                         //libération de l'employe
                         emp.setDispo(true);
+			
+			//Envoi d'une notification au client
+			String message = "Votre demande d'intervention a ete cloturee. Commentaire de l'employe : " +commentaire;			
+			Message.envoyerNotification(i.getUnClient().getNom(), i.getUnClient().getPrenom(), i.getUnClient().getTel(), message);
+			
 			return true;
 		}
 		return false;
