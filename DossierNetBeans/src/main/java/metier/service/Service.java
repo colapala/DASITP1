@@ -156,10 +156,15 @@ public class Service{
         public static List<Intervention> recupererHistorique(Client c){
 			return c.getListInterventions();
         }
+	
+	//Récupération des interventions d'un employé pour les consulter (tableau de bord)
+        public static List<Intervention> recupererTableauDeBord(Employe e){
+			return e.getListInterventions();
+        }
         
 	//Clotûre d'une intervention par un employé. Vérification : tous les champs sont remplis
 	public static boolean cloturerIntervention(Employe emp, int status, int heureDefin, String commentaire){
-		Intervention i = RechercherIntervetnionEnCours(emp);
+		Intervention i = RechercherInterventionEnCours(emp);
 		if (status >= 0 && status <=3 && commentaire.length()>0 && heureDefin >= 0 && heureDefin <= 24 && i != null){
 			
 			//Modification de l'intervention
