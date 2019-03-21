@@ -94,8 +94,6 @@ public class Main {
         
         /*A Faire:
         -trouver l'employé le plus proche du client 
-        -service tableau de bord
-        -service consulter historique
         
         Je pense qu'il faut que DemanderInterventiuon prenne un employé en entrée aussi
         */
@@ -175,7 +173,7 @@ public class Main {
         }
     }
     
-    public static void afficherHistorique (List<Intervention> listint){
+    public static void afficherListeInterventions (List<Intervention> listint){
         if (listint!=null){
         System.out.println("|  Type  |    Description    |  Statut  |");
 		for (Intervention i : listint){
@@ -212,7 +210,7 @@ public class Main {
                     System.out.println ("| "+typeString+" | "+i.getDescription()+" | "+statusString+" | ");
                     }
             }else{
-                System.out.println ("Pas d'interventions");
+                System.out.println ("Pas d'intervention");
             }
 	}
     
@@ -239,12 +237,7 @@ public class Main {
         System.out.println("2.Consulter Tableau de bord");
         System.out.println();
     }
- 
-     
-     public static void affichageTableaudeBord(){
-         
-     }
-     
+      
     public static void lancerMenuPrincipal(Personne p){
         affichageMenuPrincipal();
          int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
@@ -311,7 +304,7 @@ public class Main {
 		    lancerMenuEmploye(e);
                     break;
                 case 2: 
-		    //ConsulterTableauDeBord(e);
+		    afficherListeInterventions(e.getListInterventions());
 		    lancerMenuEmploye(e);
 	    }
 	}
@@ -323,39 +316,32 @@ public class Main {
                 case 1:
 		    Intervention tmp=null;
                     int type = Saisie.lireInteger("Type (1=Animal, 2=Livraison, 3=Incident) : ",Arrays.asList(1,2,3));
-            switch (type) {
-                case 1:
-                    {
-                        String animal = Saisie.lireChaine("Animal : ");
-                        String description = Saisie.lireChaine("Description: ");
-                        tmp=Service.DemanderIntervention(c,type,description,animal);
-                        break;
-                    }
-                case 2:
-                    {
-                        String objet = Saisie.lireChaine("Objet : ");
-                        String entreprise = Saisie.lireChaine("Entreprise : ");
-                        String description = Saisie.lireChaine("Description: ");
-                        tmp=Service.DemanderIntervention(c,type,description,objet, entreprise);
-                        break;
-                    }
-                case 3:
-                    {
-                        String description = Saisie.lireChaine("Description: ");
-                        tmp=Service.DemanderIntervention(c,type,description);
-                        break;
-                    }
-                default:
-                    break;
-            }
-				 
-                    while(tmp==null){ //if plutot ? 
+           	    switch (type) {
+             	   case 1:
+                           String animal = Saisie.lireChaine("Animal : ");
+                           String description = Saisie.lireChaine("Description: ");
+                           tmp=Service.DemanderIntervention(c,type,description,animal);
+                           break;
+                   case 2:
+                           String objet = Saisie.lireChaine("Objet : ");
+                           String entreprise = Saisie.lireChaine("Entreprise : ");
+                           String description = Saisie.lireChaine("Description: ");
+                           tmp=Service.DemanderIntervention(c,type,description,objet, entreprise);
+                           break;
+                   case 3:
+                           String description = Saisie.lireChaine("Description: ");
+                           tmp=Service.DemanderIntervention(c,type,description);
+                           break;
+                   default:
+                       break;
+				    
+                    if(tmp==null){
 			System.out.println("Erreur : la demande d'intervention n'est pas possible (champ vide ou pas d'employe disponible)");
                     }
    		    lancerMenuClient(c);
                     break;
                 case 2: 
-		     afficherHistorique(Service.recupererHistorique(c));
+		     afficherListeInterventions(Service.recupererHistorique(c));
 		     lancerMenuClient(c);
 	   }
       }
