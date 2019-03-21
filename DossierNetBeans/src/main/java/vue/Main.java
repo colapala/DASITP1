@@ -65,11 +65,18 @@ public class Main {
         Intervention i=Service.DemanderIntervention( c,2,"jhjhj");
         System.out.println(i);
        //List<Intervention> l=c.getListInterventions();
-       /*List<Employe> l=PersonneDaoJpa.trouverListeEmployeDispo(10);
+      /* List<Employe> l=PersonneDaoJpa.trouverListeEmployeDispo(10);
        l.size();
        System.out.println(l);*/
-      // Employe e=Service.trouverEmploye(c);
-       //System.out.println(e.getNom());
+       /*int heure=Service.heureActuelleToInt();
+       System.out.println(heure);
+       List<Employe> l=PersonneDaoJpa.trouverListeEmployeDispo(6);
+       l.size();
+       System.out.println(l);*/
+       Employe e=i.getUnEmploye();
+       System.out.println(e);
+       Service.cloturerIntervention(e,2,12,"tout s'est bien passé");
+       //
        //Employe e=Service.trouverEmploye(c);
         //System.out.println("debut : "+e.getHoraireEntree());
        //afficherHistorique(l);
@@ -146,7 +153,7 @@ public class Main {
     //Liste des employés de l'entreprise
     public static List<Employe> listDesEmployes(){
         List<Employe>l=new ArrayList<Employe>();
-        l.add(new Employe(true,"BORROTI MATIAS DANTAS","Raphaël","motdepassepouremploye","8 Rue Arago, Villeurbanne","328178508","rborrotimatiasdantas4171@free.fr",true,00,23));
+        l.add(new Employe(true,"BORROTI MATIAS DANTAS","Raphaël","motdepassepouremploye","8 Rue Arago, Villeurbanne","328178508","rborrotimatiasdantas4171@free.fr",true,2,12));
         l.add(new Employe(false,"OLMEADA MARAIS","Nor","motdepassepouremploye","5 Rue Léon Fabre, Villeurbanne","0418932546","nolmeadamarais1551@gmail.com",true,8,18));
         l.add(new Employe(false,"RAYES GEMEZ","Olena","motdepassepouremploye","12 Rue de la Prevoyance, Villeurbanne","0532731620","orayesgemez5313@outlook.com",true,6,16));
         l.add(new Employe(false,"SING","Ainhoa","motdepassepouremploye","4 Rue Phelypeaux, Villeurbanne","0705224200","asing8183@free.fr",true,5,15));
@@ -169,6 +176,7 @@ public class Main {
     }
     
     public static void afficherHistorique (List<Intervention> listint){
+        if (listint!=null){
         System.out.println("|  Type  |    Description    |  Statut  |");
 		for (Intervention i : listint){
                      int type=i.getType();
@@ -203,9 +211,12 @@ public class Main {
                     }
                     System.out.println ("| "+typeString+" | "+i.getDescription()+" | "+statusString+" | ");
                     }
+            }else{
+                System.out.println ("Pas d'interventions");
+            }
 	}
     
-   public static void affichageMainMenu(){
+   public static void affichageMenuPrincipal(){
         System.out.println("--------------------");
         System.out.println("Bienvenue sur ProAct'IF");
         System.out.println("--------------------");
@@ -235,7 +246,7 @@ public class Main {
      }
      
     public static void lancerMenuPrincipal(Personne p){
-        affichageMainMenu();
+        affichageMenuPrincipal();
          int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
          switch(choix){
              case 1:
@@ -294,7 +305,7 @@ public class Main {
                     int status = Saisie.lireInteger("Statut (1=Succès, 2=Echec) : ",Arrays.asList(1,2));
                     int heureDeFin = Saisie.lireInteger("Heure de fin : ");
 		    String commentaire = Saisie.lireChaine("Commentaire : ");
-                    while((Service.CloturerIntervention(e,status,heureDeFin,commentaire))==false){
+                    while((Service.cloturerIntervention(e,status,heureDeFin,commentaire))==false){
 			System.out.println("Erreur : La cloture n'a pas pu être réalisée \n\n");
 		    }
 		    lancerMenuEmploye(e);

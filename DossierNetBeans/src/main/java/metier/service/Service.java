@@ -87,6 +87,7 @@ public class Service{
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0 && objet.length()>0 && entreprise.length()>0){ 
 			InterventionLivraison a = new InterventionLivraison(objet, entreprise, description);
+                        a.setHorodate(new  Date());
                         c.ajouterIntervention(a);
                         employeTrouve.ajouterIntervention(a);
                         employeTrouve.setDispo(false);
@@ -124,7 +125,7 @@ public class Service{
         }
         
         //trouve l'employé le plus près à vélo du client
-        //il faut aussi que l'heure à laquell est faite la demande soit dans les horaires de l'employé
+        //il faut aussi que l'heure à laquelle est faite la demande soit dans les horaires de l'employé
         public static Employe trouverEmploye(Client c){
             int heure=heureActuelleToInt();
             List <Employe> list=PersonneDaoJpa.trouverListeEmployeDispo(heure);
@@ -148,7 +149,7 @@ public class Service{
 			return c.getListInterventions();
         }
         
-	public static boolean CloturerIntervention(Employe emp, int status, int heureDefin, String commentaire){
+	public static boolean cloturerIntervention(Employe emp, int status, int heureDefin, String commentaire){
 		Intervention i = RechercherIntervetnionEnCours(emp);
 		if (status >= 0 && status <=3 && commentaire.length()>0 && heureDefin >= 0 && heureDefin <= 24 && i != null){
 			i.setStatus(status);
