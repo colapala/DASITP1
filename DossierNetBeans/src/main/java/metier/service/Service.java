@@ -1,4 +1,6 @@
-/* @author jorge terreu, corentin laharotte, chanèle jourdan */
+/* @author jorge terreu, corentin laharotte, chanèle jourdan 
+   Classe qui implémente l'ensemble des services de notre application
+*/
 
 package metier.service;
 
