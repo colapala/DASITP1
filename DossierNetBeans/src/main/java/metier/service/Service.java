@@ -1,8 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/* @author jorge terreu, corentin laharotte, chanèle jourdan */
+
 package metier.service;
 
 import com.google.maps.model.LatLng;
@@ -21,15 +18,9 @@ import metier.modele.Personne;
 import java.util.Date;
 import util.GeoTest;
 
-
-/**
- *
- * @author terreu
- *
- */
 public class Service{
 
-
+	//Connection du client ou de l'employé à l'application
 	public static Personne SeConnecter(String mail, String motdepasse){
 
 		Personne a=PersonneDaoJpa.recupererPersonne(mail);
@@ -41,10 +32,7 @@ public class Service{
                 return null;
 	}
 
-	// On verifie ici que:
-	// nothing is null,
-	// mail contains @
-	// person is over 16 years old
+	//Inscription d'un client. Vérifications effectuées : tous les champs ont été remplis, le mail contient un @, le client a plus de 16 ans
 	public static Personne SeInscrire(boolean civilite, String nom, String prenom, String motDePasse, String adressePostale, String tel, String mail, Date dateDeNaissance){
 		Personne x = PersonneDaoJpa.recupererPersonne(mail);
 		if (x==null){
@@ -60,15 +48,7 @@ public class Service{
 		return null;
 	} 
         
-        public static void calculerLatLng(Personne p){
-            LatLng GPS=GeoTest.getLatLng(p.getAdressePostale());
-            p.setLongitude(GPS.lng);
-            p.setLatitude(GPS.lat);
-        }
-        
-	// I have supposed you cannot have a intervetionanimal without an animal, because then it would be no diference to interventionIncident (sauf le type ;)
-	//the same with interventionlivraison
-	//actually, we dont even need the type but I'll leave it
+	//Demande d'une intervention de type Animal. Vérification : tous les champs sont remplis
 	public static Intervention DemanderIntervention(Client c,int type, String description){
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0){
@@ -83,6 +63,7 @@ public class Service{
 		return null;
 	}
 
+	//Demande d'une intervention de type Livraison. Vérification : tous les champs sont remplis
 	public static Intervention DemanderIntervention(Client c,int type, String description, String objet, String entreprise){
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0 && objet.length()>0 && entreprise.length()>0){ 
@@ -97,6 +78,7 @@ public class Service{
 		return null;
 	}
 
+	//Demande d'une intervention de type Incident. Vérification : tous les champs sont remplis
 	public static Intervention DemanderIntervention(Client c,int type, String description, String animal){
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0 && animal.length()>0 ){
@@ -110,22 +92,9 @@ public class Service{
 		}
 		return null;
 	}
-	//Im guessing recuperListeIntervention could get the intervention of clients and employes
-	/*public static List<Intervention> ConsulterHistorique(Personne p){
-		return p.get();
-	}*/
-
-        public static int heureActuelleToInt(){
-            SimpleDateFormat format = new SimpleDateFormat ("hh:mm");
-            Date heureActuelle = new Date();
-            String heureString = format.format(heureActuelle);
-            String nbHeureString = heureString.split(":")[0];
-            int heure=Integer.parseInt(nbHeureString);
-            return heure;
-        }
         
-        //trouve l'employé le plus près à vélo du client
-        //il faut aussi que l'heure à laquelle est faite la demande soit dans les horaires de l'employé
+        //Recherche de l'employé le plus proche du client pour faire une intervention.
+	//Vérification : il est disponible, l'heure de la demande d'intervention est dans ses horaires de travail
         public static Employe trouverEmploye(Client c){
             int heure=heureActuelleToInt();
             List <Employe> list=PersonneDaoJpa.trouverListeEmployeDispo(heure);
@@ -145,10 +114,12 @@ public class Service{
             return employeSelect;
         }
 
+	//Récupération de l'historique d'un client pour le consulter
         public static List<Intervention> recupererHistorique(Client c){
 			return c.getListInterventions();
         }
         
+	//Clotûre d'une intervention par un employé. Vérification : tous les champs sont remplis
 	public static boolean cloturerIntervention(Employe emp, int status, int heureDefin, String commentaire){
 		Intervention i = RechercherIntervetnionEnCours(emp);
 		if (status >= 0 && status <=3 && commentaire.length()>0 && heureDefin >= 0 && heureDefin <= 24 && i != null){
@@ -163,7 +134,8 @@ public class Service{
 		return false;
 	}
 
-	public static Intervention RechercherIntervetnionEnCours(Employe emp){
+	//Recherche de l'intervention en cours pour un employé donnée (s'il en a une)
+	public static Intervention RechercherInterventionEnCours(Employe emp){
                 List<Intervention> list=emp.getListInterventions();
                 for (Intervention i : list){
                     if(i.getStatus()==0)
@@ -171,4 +143,22 @@ public class Service{
                 }
 		return null;
 	}
+	
+	//Calcul des coordonnées GPS d'un employé ou d'un client
+        public static void calculerLatLng(Personne p){
+            LatLng GPS=GeoTest.getLatLng(p.getAdressePostale());
+            p.setLongitude(GPS.lng);
+            p.setLatitude(GPS.lat);
+        }
+	
+	//SERVICE EN PLUS DE CEUX SPECIFIES DANS LE COMPTE RENDU 
+	//Récupération de l'heure actuelle (pour savoir à quel moment est faite une demande d'intervention)
+	 public static int heureActuelleToInt(){
+            SimpleDateFormat format = new SimpleDateFormat ("hh:mm");
+            Date heureActuelle = new Date();
+            String heureString = format.format(heureActuelle);
+            String nbHeureString = heureString.split(":")[0];
+            int heure=Integer.parseInt(nbHeureString);
+            return heure;
+        }
 }
