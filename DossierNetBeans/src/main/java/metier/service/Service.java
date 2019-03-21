@@ -51,7 +51,7 @@ public class Service{
 	} 
         
 	//Demande d'une intervention de type Animal. Vérification : tous les champs sont remplis
-	public static Intervention DemanderIntervention(Client c,int type, String description){
+	public static Employe DemanderIntervention(Client c,int type, String description){
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0){
 			InterventionIncident a = new InterventionIncident(description);
@@ -60,13 +60,13 @@ public class Service{
                         employeTrouve.ajouterIntervention(a);
                         employeTrouve.setDispo(false);
 			InterventionDaoJpa.creerIntervention(a);
-			return a;	
+			return employeTrouve;	
 		}
 		return null;
 	}
 
 	//Demande d'une intervention de type Livraison. Vérification : tous les champs sont remplis
-	public static Intervention DemanderIntervention(Client c,int type, String description, String objet, String entreprise){
+	public static Employe DemanderIntervention(Client c,int type, String description, String objet, String entreprise){
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0 && objet.length()>0 && entreprise.length()>0){ 
 			InterventionLivraison a = new InterventionLivraison(objet, entreprise, description);
@@ -75,13 +75,13 @@ public class Service{
                         employeTrouve.ajouterIntervention(a);
                         employeTrouve.setDispo(false);
 			InterventionDaoJpa.creerIntervention(a);
-			return a;
+			return employeTrouve;
 		}
 		return null;
 	}
 
 	//Demande d'une intervention de type Incident. Vérification : tous les champs sont remplis
-	public static Intervention DemanderIntervention(Client c,int type, String description, String animal){
+	public static Employe DemanderIntervention(Client c,int type, String description, String animal){
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0 && animal.length()>0 ){
 			InterventionAnimal a = new InterventionAnimal(animal, description);
@@ -90,7 +90,7 @@ public class Service{
                         employeTrouve.ajouterIntervention(a);
                         employeTrouve.setDispo(false);
 			InterventionDaoJpa.creerIntervention(a);
-			return a;
+			return employeTrouve;
 		}
 		return null;
 	}
