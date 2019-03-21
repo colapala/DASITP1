@@ -62,12 +62,14 @@ public class Main {
         
         Client c=(Client)PersonneDaoJpa.recupererPersonne("mail1@mail.com");
         System.out.println(c);
+        Intervention i=Service.DemanderIntervention( c,2,"jhjhj");
+        System.out.println(i);
        //List<Intervention> l=c.getListInterventions();
        /*List<Employe> l=PersonneDaoJpa.trouverListeEmployeDispo(10);
        l.size();
        System.out.println(l);*/
-       Employe e=Service.trouverEmploye(c);
-       System.out.println(e.getNom());
+      // Employe e=Service.trouverEmploye(c);
+       //System.out.println(e.getNom());
        //Employe e=Service.trouverEmploye(c);
         //System.out.println("debut : "+e.getHoraireEntree());
        //afficherHistorique(l);
@@ -144,7 +146,7 @@ public class Main {
     //Liste des employés de l'entreprise
     public static List<Employe> listDesEmployes(){
         List<Employe>l=new ArrayList<Employe>();
-        l.add(new Employe(true,"BORROTI MATIAS DANTAS","Raphaël","motdepassepouremploye","8 Rue Arago, Villeurbanne","328178508","rborrotimatiasdantas4171@free.fr",true,10,20));
+        l.add(new Employe(true,"BORROTI MATIAS DANTAS","Raphaël","motdepassepouremploye","8 Rue Arago, Villeurbanne","328178508","rborrotimatiasdantas4171@free.fr",true,00,23));
         l.add(new Employe(false,"OLMEADA MARAIS","Nor","motdepassepouremploye","5 Rue Léon Fabre, Villeurbanne","0418932546","nolmeadamarais1551@gmail.com",true,8,18));
         l.add(new Employe(false,"RAYES GEMEZ","Olena","motdepassepouremploye","12 Rue de la Prevoyance, Villeurbanne","0532731620","orayesgemez5313@outlook.com",true,6,16));
         l.add(new Employe(false,"SING","Ainhoa","motdepassepouremploye","4 Rue Phelypeaux, Villeurbanne","0705224200","asing8183@free.fr",true,5,15));

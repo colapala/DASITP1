@@ -73,6 +73,7 @@ public class Service{
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0){
 			InterventionIncident a = new InterventionIncident(description);
+                        a.setHorodate(new  Date());
                         c.ajouterIntervention(a);
                         employeTrouve.ajouterIntervention(a);
                         employeTrouve.setDispo(false);
@@ -99,6 +100,7 @@ public class Service{
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0 && animal.length()>0 ){
 			InterventionAnimal a = new InterventionAnimal(animal, description);
+                        a.setHorodate(new  Date());
                         c.ajouterIntervention(a);
                         employeTrouve.ajouterIntervention(a);
                         employeTrouve.setDispo(false);
