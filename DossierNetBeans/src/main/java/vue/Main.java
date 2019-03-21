@@ -36,7 +36,8 @@ public class Main {
     
     public final static String NOM_PERSISTENCE = "TPDASIPU";
     
-    public static void main(String[] args) {
+   public static void main(String[] args) {;
+        
         //LancerMenuPrincipal();
         Personne p;
         
@@ -53,12 +54,23 @@ public class Main {
         //-getListInterventions
         //-Demander interventions
         //-recupérer les employés dispo
- 
-        Client c=(Client)PersonneDaoJpa.recupererPersonne("mail1@mail.com");
+        //-trouver Employé
+        
+        insererTousLesEmployes();
+       /* Client c=(Client)PersonneDaoJpa.recupererPersonne("mail1@mail.com");
         System.out.println(c);
-        Service.DemanderIntervention(c,2,"j'ai pas touché", "colis", "amazon");
+       // List<Intervention> l=c.getListInterventions();
+        //l.size();
+        List <Employe> ll=PersonneDaoJpa.trouverListeEmployeDispo();
+        System.out.println(ll);
+        Employe e=Service.trouverEmploye(c);
+        System.out.println(e.getNom());
+        //System.out.println(l.get(0));
+        //System.out.println(c.getListInterventions());*/
+        
+        /*Service.DemanderIntervention(c,2,"j'ai pas touché", "colis", "amazon");
         //Service.DemanderIntervention(c,2,"je ne crois pas qu'il y ai de bonne ou de mauvaise situation... si je devais résumer ma vie avec vous, je dirai que c'est d'abord des rencontres, des gens qui m'ont tendu la main à un moment où je ne pouvais pas, ou j'étais seul chez moi ...et c'est assez bizarre de se dire que les hasards, les rencontres forgent une destinée ...parce que quand on a le goût de la chose , ..le goût de la chose bien faite, le beau geste ...on ne trouve pas toujours l'interlocuteur en face, je dirai le miroir qui nous aide à avancer..");
-        Service.DemanderIntervention(c,2,"mon chien s'est fait écraser", "compote");
+        Service.DemanderIntervention(c,2,"mon chien s'est fait écraser", "compote");*/
         
         /*A Faire:
         -trouver l'employé le plus proche du client 
@@ -77,10 +89,19 @@ public class Main {
         
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(NOM_PERSISTENCE);
         EntityManager em = emf.createEntityManager();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try{
+        Date date = sdf.parse("12/11/1998");
         Date d=new Date();
-        Client p2 = new Client(false, "DELAPIERRE", "ROGER", "motdepasse", "15 Rue Ampère, Paris", "063256585", "mail1@mail.com",d);
+        Client p2 = new Client(false, "DELAPIERRE", "ROGER", "motdepasse", "14 Cours Emile Zola, Villeurbanne", "063256585", "mail1@mail.com",date);
+        Service.calculerLatLng(p2);
         Client p1 = new Client(false,"ANDRE","Anouchka", "mdp", "15 Rue de la Paix, Paris", "0695666406", "googlemail@mail.com",d);
-        Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "present", "15 rue René, villeurbanne", "063256585", "mail2@mail.com",false,100,10);
+        Service.calculerLatLng(p1);
+        Employe E2 = new Employe(true, "DUCAILLOUX", "PIERRE", "present", "12 Place Bellecour, Lyon", "063256585", "mail2@mail.com",true,10,20);
+        Service.calculerLatLng(E2);
+        Employe E3 = new Employe(true, "Blanc", "gerard", "ghfru", "15 rue René, villeurbanne", "063256585", "mailmail@mail.com",true,10,20);
+        Service.calculerLatLng(E3);
+       
         InterventionAnimal A1=new InterventionAnimal("hot-dog","scoubidou");
         InterventionLivraison L1=new InterventionLivraison("colis","Entreprise","colis non livré");
         InterventionIncident I1=new InterventionIncident("j'ai un probleme");
@@ -89,6 +110,8 @@ public class Main {
         p2.ajouterIntervention(I1);
         p2.ajouterIntervention(A1);
         E2.ajouterIntervention(L1);
+        E2.ajouterIntervention(A1);
+        E2.ajouterIntervention(I1);
          
         EntityTransaction tx = em.getTransaction();
             tx.begin();
@@ -98,10 +121,76 @@ public class Main {
             em.persist(A1);
             em.persist(L1);
             em.persist(I1);
+            em.persist(E3);
             tx.commit();
         em.close();
-          //  emf.close();
+         }catch(Exception e){
+            
+        }
+      //  emf.close();
     }
+    
+    //Liste des employés de l'entreprise
+    public static List<Employe> listDesEmployes(){
+        List<Employe>l=new ArrayList<Employe>();
+        l.add(new Employe(true,"BORROTI MATIAS DANTAS","Raphaël","motdepassepouremploye","8 Rue Arago, Villeurbanne","328178508","rborrotimatiasdantas4171@free.fr",true,10,20));
+        l.add(new Employe(false,"OLMEADA MARAIS","Nor","motdepassepouremploye","5 Rue Léon Fabre, Villeurbanne","0418932546","nolmeadamarais1551@gmail.com",true,8,18));
+        l.add(new Employe(false,"RAYES GEMEZ","Olena","motdepassepouremploye","12 Rue de la Prevoyance, Villeurbanne","0532731620","orayesgemez5313@outlook.com",true,6,16));
+        l.add(new Employe(false,"SING","Ainhoa","motdepassepouremploye","4 Rue Phelypeaux, Villeurbanne","0705224200","asing8183@free.fr",true,5,15));
+        l.add( new Employe(true,"ABDIULLINA","David Alexander","motdepassepouremploye","8 Rue Wilhelmine, Villeurbanne","0590232772","david-alexander.abdiullina@laposte.net",true,12,22));
+        l.add(new Employe(true,"WOAGNER","Moez","motdepassepouremploye","6 Rue Camille Koechlin, Villeurbanne","0832205629","moez.woagner@laposte.net",true,7,17));
+        l.add(new Employe(true,"HONRY","Matteo","motdepassepouremploye","9 Impasse Guillet, Villeurbanne","0482381862","matteo.honry@yahoo.com",true,5,15));
+        l.add( new Employe(true,"CECCANI","Kevin","motdepassepouremploye","20 Rue Decomberousse, Villeurbanne","0664426037","kevin.ceccani@hotmail.com",true,8,18));
+        l.add(new Employe(false,"VOYRET","Alice","motdepassepouremploye","1 Rue d'Alsace, Villeurbanne","0486856520","alice.voyret@hotmail.com",true,6,16));
+        l.add(new Employe(true,"RINERD","Julien","motdepassepouremploye","4 Rue de la Jeunesse, Villeurbanne","0727252485","jrinerd5241@yahoo.com",true,9,19));
+        return l;
+    }
+    
+    //inseertion initiale de tous les employés
+    public static void insererTousLesEmployes(){
+        List<Employe>list=listDesEmployes();
+        for (Employe e : list){
+            Service.calculerLatLng(e);
+            PersonneDaoJpa.creerPersonne(e);
+        }
+    }
+    
+    public static void AfficherHistorique (List<Intervention> listint){
+        System.out.println("|  Type  |    Description    |  Statut  |");
+		for (Intervention i : listint){
+                     int type=i.getType();
+                     int status=i.getStatus();
+                     String typeString="";
+                     String statusString="";
+                    switch (type) {
+                    case 1:
+                        typeString="Animal";
+                        break;
+                    case 2:
+                        typeString="Livraison";
+                        break;
+                    case 3:
+                        typeString="Incident";
+                        break;
+                    default:
+                        break;
+                    }
+                    switch (status) {
+                    case 0:
+                        statusString="Echec";
+                        break;
+                    case 1:
+                        statusString="En Cours";
+                        break;
+                    case 2:
+                        statusString="Succès";
+                        break;
+                    default:
+                        break;
+                    }
+                    System.out.println ("| "+typeString+" | "+i.getDescription()+" | "+statusString+" | ");
+                    }
+	}
     
    public static void AffichageMainMenu(){
         System.out.println("--------------------");
@@ -127,15 +216,12 @@ public class Main {
         System.out.println();
     }
  
-     public static void AffichageHistorique(){
-         
-     }
      
      public static void AffichageTableaudeBord(){
          
      }
      
-  public static void LancerMenuPrincipal(Personne p){
+    public static void LancerMenuPrincipal(Personne p){
          AffichageMainMenu();
          int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
          switch(choix){
@@ -187,7 +273,7 @@ public class Main {
            }
      }
 	 
-	public static void LancerMenuEmploye(Employe e){ 
+    public static void LancerMenuEmploye(Employe e){ 
             AffichageMenuEmploye();
             int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
             switch(choix){
@@ -206,13 +292,13 @@ public class Main {
 	    }
 	}
 	
-	public static void LancerMenuClient(Client c){ 
+    public static void LancerMenuClient(Client c){ 
             AffichageMenuClient();
             int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
             switch(choix){
                 case 1:
 		    Intervention tmp=null;
-                    int type = Saisie.lireInteger("Statut (1=Animal, 2=Livraison, 3=Incident) : ",Arrays.asList(1,2,3));
+                    int type = Saisie.lireInteger("Type (1=Animal, 2=Livraison, 3=Incident) : ",Arrays.asList(1,2,3));
             switch (type) {
                 case 1:
                     {

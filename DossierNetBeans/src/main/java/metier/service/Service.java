@@ -101,26 +101,23 @@ public class Service{
 	/*public static List<Intervention> ConsulterHistorique(Personne p){
 		return p.get();
 	}*/
-	
-	public static void AfficherHistorique (List<Intervention> listint){
-		for (Intervention i : listint){
-			AfficherIntervention(i);
-		}
-	}
+
         
-        public static Employe trouverEmploye(Intervention i, Client c){
+        public static Employe trouverEmploye(Client c){
             List <Employe> list=PersonneDaoJpa.trouverListeEmployeDispo();
             Employe employeSelect=null;
-            double min=1000000000;
-            LatLng clientGPS=new LatLng(c.getLatitude(),c.getLongitude());
-            for (Employe e : list){
-                        LatLng employeGPS=new LatLng(e.getLatitude(),e.getLongitude());
-			double tempsTrajet=GeoTest.getTripDurationByBicycleInMinute(clientGPS,employeGPS);
-                        if(tempsTrajet<min){
-                            min=tempsTrajet;
-                            employeSelect=e;
-                        }
-		}
+            if(list!=null){
+                double min=1000000000;
+                LatLng clientGPS=new LatLng(c.getLatitude(),c.getLongitude());
+                for (Employe e : list){
+                            LatLng employeGPS=new LatLng(e.getLatitude(),e.getLongitude());
+                            double tempsTrajet=GeoTest.getTripDurationByBicycleInMinute(clientGPS,employeGPS);
+                            if(tempsTrajet<min){
+                                min=tempsTrajet;
+                                employeSelect=e;
+                            }
+                    }
+            }
             return employeSelect;
         }
 
@@ -162,4 +159,3 @@ public class Service{
 		System.out.println("status: " + status + "/n" + "desc: " + description + "/n" );
 	}
 }
-
