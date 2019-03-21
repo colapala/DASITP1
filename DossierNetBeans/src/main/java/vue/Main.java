@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,7 +37,8 @@ public class Main {
     
     public final static String NOM_PERSISTENCE = "TPDASIPU";
     
-   public static void main(String[] args) {;
+   public static void main(String[] args) {
+       
         
         //LancerMenuPrincipal();
         Personne p;
@@ -57,11 +59,20 @@ public class Main {
         //-trouver Employé
         
         insererTousLesEmployes();
-       /* Client c=(Client)PersonneDaoJpa.recupererPersonne("mail1@mail.com");
+        
+        Client c=(Client)PersonneDaoJpa.recupererPersonne("mail1@mail.com");
         System.out.println(c);
-       // List<Intervention> l=c.getListInterventions();
-        //l.size();
-        List <Employe> ll=PersonneDaoJpa.trouverListeEmployeDispo();
+       //List<Intervention> l=c.getListInterventions();
+       /*List<Employe> l=PersonneDaoJpa.trouverListeEmployeDispo(10);
+       l.size();
+       System.out.println(l);*/
+       Employe e=Service.trouverEmploye(c);
+       System.out.println(e.getNom());
+       //Employe e=Service.trouverEmploye(c);
+        //System.out.println("debut : "+e.getHoraireEntree());
+       //afficherHistorique(l);
+        
+        /*List <Employe> ll=PersonneDaoJpa.trouverListeEmployeDispo();
         System.out.println(ll);
         Employe e=Service.trouverEmploye(c);
         System.out.println(e.getNom());
@@ -155,7 +166,7 @@ public class Main {
         }
     }
     
-    public static void AfficherHistorique (List<Intervention> listint){
+    public static void afficherHistorique (List<Intervention> listint){
         System.out.println("|  Type  |    Description    |  Statut  |");
 		for (Intervention i : listint){
                      int type=i.getType();
@@ -177,10 +188,10 @@ public class Main {
                     }
                     switch (status) {
                     case 0:
-                        statusString="Echec";
+                        statusString="En Cours";
                         break;
                     case 1:
-                        statusString="En Cours";
+                        statusString="Echec";
                         break;
                     case 2:
                         statusString="Succès";
@@ -192,7 +203,7 @@ public class Main {
                     }
 	}
     
-   public static void AffichageMainMenu(){
+   public static void affichageMainMenu(){
         System.out.println("--------------------");
         System.out.println("Bienvenue sur ProAct'IF");
         System.out.println("--------------------");
@@ -202,14 +213,14 @@ public class Main {
         System.out.println();
     }
     
-    public static void AffichageMenuClient(){
+    public static void affichageMenuClient(){
         System.out.println("Choisir une option:");
         System.out.println("1.Demander une intervention");
         System.out.println("2.Consulter Historique");
         System.out.println();
     }
     
-     public static void AffichageMenuEmploye(){
+     public static void affichageMenuEmploye(){
         System.out.println("Choisir une option:");
         System.out.println("1.Cloturer l'intervention en cours");
         System.out.println("2.Consulter Tableau de bord");
@@ -217,12 +228,12 @@ public class Main {
     }
  
      
-     public static void AffichageTableaudeBord(){
+     public static void affichageTableaudeBord(){
          
      }
      
-    public static void LancerMenuPrincipal(Personne p){
-         AffichageMainMenu();
+    public static void lancerMenuPrincipal(Personne p){
+        affichageMainMenu();
          int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
          switch(choix){
              case 1:
@@ -232,12 +243,12 @@ public class Main {
 		 p=Service.SeConnecter(mail, motDePasse);
                  while(p==null){
 			System.out.println("Erreur lors de la connexion \n\n");
-			LancerMenuPrincipal(p);
+			lancerMenuPrincipal(p);
 		}
 		 if (p instanceof Employe){
-			LancerMenuEmploye((Employe)p);
+			lancerMenuEmploye((Employe)p);
 		 } else if ( p instanceof Client){
-			LancerMenuClient((Client)p);
+			lancerMenuClient((Client)p);
 		 }
                  break;
              }
@@ -262,19 +273,19 @@ public class Main {
                  }
 		 while(p==null){
 			System.out.println("Erreur : L'inscription n'a pas pu être réalisée (champ vide ou mail déjà utilisé \n\n");
-			LancerMenuPrincipal(p);
+			lancerMenuPrincipal(p);
 		 } 
 		 if (p instanceof Employe){
-			LancerMenuEmploye((Employe)p);
+			lancerMenuEmploye((Employe)p);
 		 } else if ( p instanceof Client){
-			LancerMenuClient((Client)p);
+			lancerMenuClient((Client)p);
 		 }
                  break;
            }
      }
 	 
-    public static void LancerMenuEmploye(Employe e){ 
-            AffichageMenuEmploye();
+    public static void lancerMenuEmploye(Employe e){ 
+            affichageMenuEmploye();
             int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
             switch(choix){
                 case 1:
@@ -284,16 +295,16 @@ public class Main {
                     while((Service.CloturerIntervention(e,status,heureDeFin,commentaire))==false){
 			System.out.println("Erreur : La cloture n'a pas pu être réalisée \n\n");
 		    }
-		    LancerMenuEmploye(e);
+		    lancerMenuEmploye(e);
                     break;
                 case 2: 
 		    //ConsulterTableauDeBord(e);
-		    LancerMenuEmploye(e);
+		    lancerMenuEmploye(e);
 	    }
 	}
 	
-    public static void LancerMenuClient(Client c){ 
-            AffichageMenuClient();
+    public static void lancerMenuClient(Client c){ 
+            affichageMenuClient();
             int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
             switch(choix){
                 case 1:
@@ -328,11 +339,11 @@ public class Main {
                     while(tmp==null){ //if plutot ? 
 			System.out.println("Erreur : la demande d'intervention n'est pas possible (champ vide ou pas d'employe disponible)");
                     }
-   		    LancerMenuClient(c);
+   		    lancerMenuClient(c);
                     break;
                 case 2: 
-		     //ConsulterHistorique(c);
-		     LancerMenuClient(c);
+		     afficherHistorique(Service.recupererHistorique(c));
+		     lancerMenuClient(c);
 	   }
       }
 }

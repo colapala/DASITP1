@@ -51,7 +51,7 @@ public class Employe extends Personne {
         return horaireSortie;
     }
     
-    public List<Intervention> getInterventions() {
+    public List<Intervention> getListInterventions() {
         return listInterventions;
     }
     public void setDispo(boolean dispo) {
@@ -66,7 +66,7 @@ public class Employe extends Personne {
         this.horaireSortie = horaireSortie;
     }
 
-    public void setInterventions(List<Intervention> interventions) {
+    public void setListInterventions(List<Intervention> interventions) {
         this.listInterventions = interventions;
     }
     

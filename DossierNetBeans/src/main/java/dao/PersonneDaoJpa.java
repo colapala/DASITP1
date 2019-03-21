@@ -54,10 +54,11 @@ public class PersonneDaoJpa{
     }
     
     //Pas sure de la structure : requete à compléter quand on aura vu comment on fonctionne ac le truc de google maps
-    public static List<Employe> trouverListeEmployeDispo(){ 
+    public static List<Employe> trouverListeEmployeDispo(int heure){ 
         EntityManager em=JpaUtil.obtenirEntityManager();
-        String jpql= "Select e from Employe e where e.dispo=1";
+        String jpql= "Select e from Employe e where e.dispo=1 and e.horaireEntree<:heure and e.horaireSortie>:heure";
         Query requete=em.createQuery(jpql);
+        requete.setParameter("heure",heure);
         List<Employe> result=null;
         try{
             result=(List<Employe>) requete.getResultList();

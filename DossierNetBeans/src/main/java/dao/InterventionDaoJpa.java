@@ -38,18 +38,6 @@ public class InterventionDaoJpa{
         return result;
     }*/
     
-    public static Intervention recupererInterventionEnCours(Employe emp){ //Requete à compléter selon les attributs de Intervention dans la bdd
-        EntityManager em=JpaUtil.obtenirEntityManager();
-        String jpql = "Select i from Intervention i where i.[...]=:id and i.statut=0"; 
-        Query requete=em.createQuery(jpql);
-        requete.setParameter("id",emp.getId());
-        Intervention result=null;
-        try{
-            result=(Intervention) requete.getSingleResult();
-        } catch (Exception e) {
-        }
-        return result;
-    } 
     
     public static void modifierIntervention(Intervention i){ //Pour le cas où on change son statut
         EntityManager em=JpaUtil.obtenirEntityManager();
