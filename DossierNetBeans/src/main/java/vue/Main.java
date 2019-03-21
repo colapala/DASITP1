@@ -84,7 +84,7 @@ public class Main {
         //System.out.println(c.getListInterventions());*/
         
         /*Service.DemanderIntervention(c,2,"j'ai pas touché", "colis", "amazon");
-        //Service.DemanderIntervention(c,2,"je ne crois pas qu'il y ai de bonne ou de mauvaise situation... si je devais résumer ma vie avec vous, je dirai que c'est d'abord des rencontres, des gens qui m'ont tendu la main à un moment où je ne pouvais pas, ou j'étais seul chez moi ...et c'est assez bizarre de se dire que les hasards, les rencontres forgent une destinée ...parce que quand on a le goût de la chose , ..le goût de la chose bien faite, le beau geste ...on ne trouve pas toujours l'interlocuteur en face, je dirai le miroir qui nous aide à avancer..");
+        //Service.DemanderIntervention(c,2,"je ne crois pas qu'il y ait de bonne ou de mauvaise situation... si je devais résumer ma vie avec vous, je dirai que c'est d'abord des rencontres, des gens qui m'ont tendu la main à un moment où je ne pouvais pas, ou j'étais seul chez moi ...et c'est assez bizarre de se dire que les hasards, les rencontres forgent une destinée ...parce que quand on a le goût de la chose , ..le goût de la chose bien faite, le beau geste ...on ne trouve pas toujours l'interlocuteur en face, je dirai le miroir qui nous aide à avancer..");
         Service.DemanderIntervention(c,2,"mon chien s'est fait écraser", "compote");*/
         
         /*A Faire:
@@ -253,8 +253,8 @@ public class Main {
                  String mail = Saisie.lireChaine("Mail : ");
                  String motDePasse = Saisie.lireChaine("Mot de passe : ");
 		 p=Service.SeConnecter(mail, motDePasse);
-                 while(p==null){
-			System.out.println("Erreur lors de la connexion \n\n");
+                 if(p==null){
+			System.out.println("Echec de la connexion \n\n");
 			lancerMenuPrincipal(p);
 		}
 		 if (p instanceof Employe){
@@ -283,10 +283,12 @@ public class Main {
 		 p=Service.SeInscrire(civilite, nom, prenom, mdp, addpost, tel, mail, date);
                  }catch(Exception e){
                  }
-		 while(p==null){
-			System.out.println("Erreur : L'inscription n'a pas pu être réalisée (champ vide ou mail déjà utilisé \n\n");
+		 if(p==null){
+			System.out.println("Erreur : L'inscription n'a pas pu être réalisée (champ vide ou mail déjà utilisé) \n\n");
 			lancerMenuPrincipal(p);
-		 } 
+		 } else {
+			 System.out.println("Inscription réussie \n\n");
+		 }
 		 if (p instanceof Employe){
 			lancerMenuEmploye((Employe)p);
 		 } else if ( p instanceof Client){
@@ -301,11 +303,18 @@ public class Main {
             int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
             switch(choix){
                 case 1:
-                    int status = Saisie.lireInteger("Statut (1=Succès, 2=Echec) : ",Arrays.asList(1,2));
-                    int heureDeFin = Saisie.lireInteger("Heure de fin : ");
-		    String commentaire = Saisie.lireChaine("Commentaire : ");
-                    while((Service.cloturerIntervention(e,status,heureDeFin,commentaire))==false){
-			System.out.println("Erreur : La cloture n'a pas pu être réalisée \n\n");
+		    if(Service.RechercherInterventionEnCours(e)!=null){
+                  	  int status = Saisie.lireInteger("Statut (1=Succès, 2=Echec) : ",Arrays.asList(1,2));
+                   	  int heureDeFin = Saisie.lireInteger("Heure de fin : ");
+		  	  String commentaire = Saisie.lireChaine("Commentaire : ");
+		    	  boolean cloture=Service.cloturerIntervention(e,status,heureDeFin,commentaire);
+                   	  if(!cloture){
+				   System.out.println("Erreur : Cloture de l'intervention échouée \n\n");
+		    	  } else {
+			  	   System.out.println("Cloture de l'intervention réussie \n\n");
+			  }
+		    } else {
+		    	  System.out.println("Vous n’avez pas d’intervention à clôturer \n\n");
 		    }
 		    lancerMenuEmploye(e);
                     break;
@@ -343,7 +352,9 @@ public class Main {
 				    
                     if(tmp==null){
 			System.out.println("Erreur : la demande d'intervention n'est pas possible (champ vide ou pas d'employe disponible)");
-                    }
+                    } else {
+		    	System.out.println("Demande d’intervention validée");
+		    }
    		    lancerMenuClient(c);
                     break;
                 case 2: 
