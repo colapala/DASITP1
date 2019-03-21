@@ -1,8 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/* @author jorge terreu, corentin laharotte, chanèle jourdan 
+   Classe qui représente l'interface avec l'utilisateur
+*/
+
 package vue;
 
 import dao.InterventionDaoJpa;
@@ -28,14 +27,9 @@ import metier.modele.Personne;
 import metier.service.Service;
 import util.Saisie;
 
-/**
- *
- * @author colap
- * classe qui permet de faire l'interface utilisateur
- */
 public class Main {
     
-    public final static String NOM_PERSISTENCE = "TPDASIPU";
+   public final static String NOM_PERSISTENCE = "TPDASIPU";
     
    public static void main(String[] args) {
        
@@ -103,6 +97,8 @@ public class Main {
         
     }
     
+	
+    //Permet de créer et persister différents objets pour les intégrer à notre base de données
     public static void Remplir(){
         
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(NOM_PERSISTENCE);
@@ -148,7 +144,7 @@ public class Main {
       //  emf.close();
     }
     
-    //Liste des employés de l'entreprise
+    //Création de la liste des employés de l'entreprise
     public static List<Employe> listDesEmployes(){
         List<Employe>l=new ArrayList<Employe>();
         l.add(new Employe(true,"BORROTI MATIAS DANTAS","Raphaël","motdepassepouremploye","8 Rue Arago, Villeurbanne","328178508","rborrotimatiasdantas4171@free.fr",true,2,12));
@@ -164,7 +160,7 @@ public class Main {
         return l;
     }
     
-    //inseertion initiale de tous les employés
+    //Permet d'insérer l'ensemble des employés dans la base de données
     public static void insererTousLesEmployes(){
         List<Employe>list=listDesEmployes();
         for (Employe e : list){
@@ -173,6 +169,8 @@ public class Main {
         }
     }
     
+    //Permet d'afficher une liste d'intervention 
+    //Sert pour l'affichage de l'historique d'un client et du tableau de bord d'un employé
     public static void afficherListeInterventions (List<Intervention> listint){
         if (listint!=null){
         System.out.println("|  Type  |    Description    |  Statut  |");
@@ -214,6 +212,9 @@ public class Main {
             }
 	}
     
+	
+   //Affichage des différents Menu (principal, client, employé)
+	
    public static void affichageMenuPrincipal(){
         System.out.println("--------------------");
         System.out.println("Bienvenue sur ProAct'IF");
@@ -238,6 +239,10 @@ public class Main {
         System.out.println();
     }
       
+	
+    //Lancement des différents menus (principal, client, employé)
+    //Ils font automatiquement appel aux différents affichage et service selon la demande de l'utilisateur
+	
     public static void lancerMenuPrincipal(Personne p){
         affichageMenuPrincipal();
          int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
