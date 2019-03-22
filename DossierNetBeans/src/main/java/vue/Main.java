@@ -4,14 +4,12 @@
 
 package vue;
 
-import dao.InterventionDaoJpa;
 import dao.JpaUtil;
 import dao.PersonneDaoJpa;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -33,18 +31,16 @@ public class Main {
    public final static String NOM_PERSISTENCE = "TPDASIPU";
     
    public static void main(String[] args) {
-       
-        
-        //LancerMenuPrincipal();
-        Personne p;
+         Personne p=null;
         
         //Test sur remplissage
-        Remplir();
+        //Remplir();
   
-        JpaUtil.init();
-        JpaUtil.creerEntityManager();
-        JpaUtil.ouvrirTransaction();
+       
         
+        JpaUtil.init();
+        //insererTousLesEmployes();
+        lancerMenuPrincipal(p);
         //services testés :
         //-SeConnecter
         //-SeInscrire
@@ -53,12 +49,11 @@ public class Main {
         //-recupérer les employés dispo
         //-trouver Employé
         
-        insererTousLesEmployes();
         
-        Client c=(Client)PersonneDaoJpa.recupererPersonne("mail1@mail.com");
+        
+        /*Client c=(Client)PersonneDaoJpa.recupererPersonne("mail1@mail.com");
         System.out.println(c);
-        Intervention i=Service.DemanderIntervention( c,2,"jhjhj");
-        System.out.println(i);
+        Employe e=Service.demanderIntervention( c,2,"jhjhj");*/
        //List<Intervention> l=c.getListInterventions();
       /* List<Employe> l=PersonneDaoJpa.trouverListeEmployeDispo(10);
        l.size();
@@ -68,9 +63,8 @@ public class Main {
        List<Employe> l=PersonneDaoJpa.trouverListeEmployeDispo(6);
        l.size();
        System.out.println(l);*/
-       Employe e=i.getUnEmploye();
-       System.out.println(e);
-       Service.cloturerIntervention(e,2,12,"tout s'est bien passé");
+      // System.out.println(e);
+       //Service.cloturerIntervention(e,2,12,"tout s'est bien passé");
        //
        //Employe e=Service.trouverEmploye(c);
         //System.out.println("debut : "+e.getHoraireEntree());
@@ -92,8 +86,6 @@ public class Main {
         
         Je pense qu'il faut que DemanderInterventiuon prenne un employé en entrée aussi
         */
-        JpaUtil.validerTransaction();
-        JpaUtil.fermerEntityManager();
         JpaUtil.destroy();
         
     }
@@ -163,17 +155,21 @@ public class Main {
     
     //Permet d'insérer l'ensemble des employés dans la base de données
     public static void insererTousLesEmployes(){
+        JpaUtil.creerEntityManager();
+        JpaUtil.ouvrirTransaction();
         List<Employe>list=listDesEmployes();
         for (Employe e : list){
             Service.calculerLatLng(e);
             PersonneDaoJpa.creerPersonne(e);
         }
+        JpaUtil.validerTransaction();
+        JpaUtil.fermerEntityManager();
     }
     
     //Permet d'afficher une liste d'intervention 
     //Sert pour l'affichage de l'historique d'un client et du tableau de bord d'un employé
     public static void afficherListeInterventions (List<Intervention> listint){
-        if (listint!=null){
+        if (!listint.isEmpty()){
         System.out.println("|  Type  |    Description    |  Statut  |");
 		for (Intervention i : listint){
                      int type=i.getType();
@@ -198,10 +194,10 @@ public class Main {
                         statusString="En Cours";
                         break;
                     case 1:
-                        statusString="Echec";
+                        statusString="Succès";
                         break;
                     case 2:
-                        statusString="Succès";
+                        statusString="Echec";
                         break;
                     default:
                         break;
@@ -227,16 +223,20 @@ public class Main {
     }
     
     public static void affichageMenuClient(){
+        System.out.println();
         System.out.println("Choisir une option:");
         System.out.println("1.Demander une intervention");
         System.out.println("2.Consulter Historique");
+        System.out.println("3.Retour");
         System.out.println();
     }
     
      public static void affichageMenuEmploye(){
+        System.out.println();
         System.out.println("Choisir une option:");
         System.out.println("1.Cloturer l'intervention en cours");
         System.out.println("2.Consulter Tableau de bord");
+        System.out.println("3.Retour");
         System.out.println();
     }
       
@@ -252,7 +252,7 @@ public class Main {
              {
                  String mail = Saisie.lireChaine("Mail : ");
                  String motDePasse = Saisie.lireChaine("Mot de passe : ");
-		 p=Service.SeConnecter(mail, motDePasse);
+		 p=Service.seConnecter(mail, motDePasse);
                  if(p==null){
 			System.out.println("Echec de la connexion \n\n");
 			lancerMenuPrincipal(p);
@@ -280,7 +280,7 @@ public class Main {
                  try{
                  String dateNaiss = Saisie.lireChaine("Date de naissance (dd/MM/yyyy) : ");
 		 Date date = sdf.parse(dateNaiss);
-		 p=Service.SeInscrire(civilite, nom, prenom, mdp, addpost, tel, mail, date);
+		 p=Service.seInscrire(civilite, nom, prenom, mdp, addpost, tel, mail, date);
                  }catch(Exception e){
                  }
 		 if(p==null){
@@ -289,6 +289,7 @@ public class Main {
 		 } else {
 			 System.out.println("Inscription réussie \n\n");
 		 }
+                 
 		 if (p instanceof Employe){
 			lancerMenuEmploye((Employe)p);
 		 } else if ( p instanceof Client){
@@ -300,10 +301,10 @@ public class Main {
 	 
     public static void lancerMenuEmploye(Employe e){ 
             affichageMenuEmploye();
-            int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
+            int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2,3));
             switch(choix){
                 case 1:
-		    if(Service.RechercherInterventionEnCours(e)!=null){
+		    if(Service.rechercherInterventionEnCours(e)!=null){
                   	  int status = Saisie.lireInteger("Statut (1=Succès, 2=Echec) : ",Arrays.asList(1,2));
                    	  int heureDeFin = Saisie.lireInteger("Heure de fin : ");
 		  	  String commentaire = Saisie.lireChaine("Commentaire : ");
@@ -321,34 +322,39 @@ public class Main {
                 case 2: 
 		    afficherListeInterventions(Service.recupererTableauDeBord(e));
 		    lancerMenuEmploye(e);
+                    break;
+                case 3:
+                    lancerMenuPrincipal(e);
+                    break;
 	    }
 	}
 	
     public static void lancerMenuClient(Client c){ 
             affichageMenuClient();
-            int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
+            int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2,3));
             switch(choix){
                 case 1:
-		    Intervention tmp=null;
+		    Employe tmp=null;
                     int type = Saisie.lireInteger("Type (1=Animal, 2=Livraison, 3=Incident) : ",Arrays.asList(1,2,3));
            	    switch (type) {
              	   case 1:
                            String animal = Saisie.lireChaine("Animal : ");
                            String description = Saisie.lireChaine("Description: ");
-                           tmp=Service.DemanderIntervention(c,type,description,animal);
+                           tmp=Service.demanderIntervention(c,type,description,animal);
                            break;
                    case 2:
                            String objet = Saisie.lireChaine("Objet : ");
                            String entreprise = Saisie.lireChaine("Entreprise : ");
-                           String description = Saisie.lireChaine("Description: ");
-                           tmp=Service.DemanderIntervention(c,type,description,objet, entreprise);
+                           String description1 = Saisie.lireChaine("Description: ");
+                           tmp=Service.demanderIntervention(c,type,description1,objet, entreprise);
                            break;
                    case 3:
-                           String description = Saisie.lireChaine("Description: ");
-                           tmp=Service.DemanderIntervention(c,type,description);
+                           String description2= Saisie.lireChaine("Description: ");
+                           tmp=Service.demanderIntervention(c,type,description2);
                            break;
                    default:
                        break;
+                    }
 				    
                     if(tmp==null){
 			System.out.println("Erreur : la demande d'intervention n'est pas possible (champ vide ou pas d'employe disponible)");
@@ -360,6 +366,12 @@ public class Main {
                 case 2: 
 		     afficherListeInterventions(Service.recupererHistorique(c));
 		     lancerMenuClient(c);
+                     break;
+                case 3:
+                    lancerMenuPrincipal(c);
+                    break;
+                default:
+                     break;
 	   }
       }
 }

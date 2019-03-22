@@ -6,8 +6,10 @@ package metier.service;
 
 import com.google.maps.model.LatLng;
 import dao.InterventionDaoJpa;
+import dao.JpaUtil;
 import dao.PersonneDaoJpa;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import metier.modele.Client;
@@ -24,19 +26,23 @@ import util.Message;
 public class Service{
 
 	//Connection du client ou de l'employé à l'application
-	public static Personne SeConnecter(String mail, String motdepasse){
-
+	public static Personne seConnecter(String mail, String motdepasse){
+                JpaUtil.creerEntityManager();
+                JpaUtil.ouvrirTransaction();
 		Personne a=PersonneDaoJpa.recupererPersonne(mail);
 		if (a!=null){
 			if (a.getMotDePasse().equals(motdepasse)){//a.getMotDePasse()== motdepasse){ 
-				return a;
 			}
 		}
-                return null;
+                JpaUtil.validerTransaction();
+                JpaUtil.fermerEntityManager();
+                return a;
 	}
 
 	//Inscription d'un client. Vérifications effectuées : tous les champs ont été remplis, le mail contient un @, le client a plus de 16 ans
-	public static Personne SeInscrire(boolean civilite, String nom, String prenom, String motDePasse, String adressePostale, String tel, String mail, Date dateDeNaissance){
+	public static Personne seInscrire(boolean civilite, String nom, String prenom, String motDePasse, String adressePostale, String tel, String mail, Date dateDeNaissance){
+                JpaUtil.creerEntityManager();
+                JpaUtil.ouvrirTransaction();
 		Personne x = PersonneDaoJpa.recupererPersonne(mail);
 		if (x==null){
 			Date ahorita = new Date();
@@ -45,28 +51,29 @@ public class Service{
 			adressePostale.length()>0 && tel.length()>0 && ((ahorita.getTime() - dateDeNaissance.getTime()) > 16*365*24*60*60*1000)) {
 				
 				//Création et persistence d'un nouveau client
-				Client a = new Client (civilite, nom, prenom, motDePasse, adressePostale, tel, mail, dateDeNaissance);
-				PersonneDaoJpa.creerPersonne(a);
-                                calculerLatLng(a);
+				x = new Client (civilite, nom, prenom, motDePasse, adressePostale, tel, mail, dateDeNaissance);
+				calculerLatLng(x);
+                                PersonneDaoJpa.creerPersonne(x);
 				
 				//Envoi de mail de confirmation d'inscription
 				String message="Bonjour "+prenom+", nous vous confirmons votre inscription au service PROACT'IF.";
 				Message.envoyerMail("contact@proac.if", mail, "Bienvenue chez PROACT'IF", message);
-				
-				return a;
-
 			}
-		}
-		
+		}else{
 		//Envoie de mail pour informer de l'échec de l'inscription
 		String message="Bonjour "+prenom+",  votre inscription a échoué, veuillez recommencer ultérieurement.";
 		Message.envoyerMail("contact@proac.if", mail, "Bienvenue chez PROACT'IF", message);
-		
-		return null;
+		x=null;
+                }
+                JpaUtil.validerTransaction();
+                JpaUtil.fermerEntityManager();
+		return x;
 	} 
         
 	//Demande d'une intervention de type Animal. Vérification : tous les champs sont remplis
-	public static Employe DemanderIntervention(Client c,int type, String description){
+	public static Employe demanderIntervention(Client c,int type, String description){
+                JpaUtil.creerEntityManager();
+                JpaUtil.ouvrirTransaction();
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0){
 			
@@ -80,15 +87,19 @@ public class Service{
 			
 			//Envoi d'une notification à l'employé trouvé
 			String message = "Intervention Animal demandee pour " +c.getPrenom()+ " " +c.getNom()+ ", " +c.getAdressePostale()+ ". Commentaire : " +description;			
-			Message.envoyerNotification(employeTrouve.getNom(), employeTrouve.getPrenom(), employeTrouve.getTel(), message);
-			
-			return employeTrouve;	
-		}
-		return null;
+			Message.envoyerNotification(employeTrouve.getNom(), employeTrouve.getPrenom(), employeTrouve.getTel(), message);	
+                } 
+                JpaUtil.validerTransaction();
+                JpaUtil.fermerEntityManager();
+                return employeTrouve;
+
+                
 	}
 
 	//Demande d'une intervention de type Livraison. Vérification : tous les champs sont remplis
-	public static Employe DemanderIntervention(Client c,int type, String description, String objet, String entreprise){
+	public static Employe demanderIntervention(Client c,int type, String description, String objet, String entreprise){
+                JpaUtil.creerEntityManager();
+                JpaUtil.ouvrirTransaction();
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0 && objet.length()>0 && entreprise.length()>0){ 
 			
@@ -104,13 +115,17 @@ public class Service{
 			String message = "Intervention Livraison demandee pour " +c.getPrenom()+ " " +c.getNom()+ ", " +c.getAdressePostale()+ ". Commentaire : " +description;			
 			Message.envoyerNotification(employeTrouve.getNom(), employeTrouve.getPrenom(), employeTrouve.getTel(), message);
 			
-			return employeTrouve;
+			
 		}
-		return null;
+                JpaUtil.validerTransaction();
+                JpaUtil.fermerEntityManager();
+		return employeTrouve;
 	}
 
 	//Demande d'une intervention de type Incident. Vérification : tous les champs sont remplis
-	public static Employe DemanderIntervention(Client c,int type, String description, String animal){
+	public static Employe demanderIntervention(Client c,int type, String description, String animal){
+                JpaUtil.creerEntityManager();
+                JpaUtil.ouvrirTransaction();
                 Employe employeTrouve=trouverEmploye(c);
 		if (employeTrouve!=null && type>= 0 && type <=3 && description.length()>0 && animal.length()>0 ){
 			
@@ -125,10 +140,10 @@ public class Service{
 			//Envoi d'une notification à l'employé trouvé
 			String message = "Intervention Incident demandee pour " +c.getPrenom()+ " " +c.getNom()+ ", " +c.getAdressePostale()+ ". Commentaire : " +description;			
 			Message.envoyerNotification(employeTrouve.getNom(), employeTrouve.getPrenom(), employeTrouve.getTel(), message);			
-			
-			return employeTrouve;
 		}
-		return null;
+                JpaUtil.validerTransaction();
+                JpaUtil.fermerEntityManager();
+		return employeTrouve;
 	}
         
         //Recherche de l'employé le plus proche du client pour faire une intervention.
@@ -159,12 +174,22 @@ public class Service{
 	
 	//Récupération des interventions d'un employé pour les consulter (tableau de bord)
         public static List<Intervention> recupererTableauDeBord(Employe e){
-			return e.getListInterventions();
+            List <Intervention>l=e.getListInterventions();
+            List <Intervention> list=new ArrayList<Intervention>();
+            Date d=new Date();
+            for (Intervention i: l){
+			if(d.compareTo(i.getHorodate())!=0)
+                            list.add(i);
+            }
+            return list;
         }
         
 	//Clotûre d'une intervention par un employé. Vérification : tous les champs sont remplis
 	public static boolean cloturerIntervention(Employe emp, int status, int heureDefin, String commentaire){
-		Intervention i = RechercherInterventionEnCours(emp);
+                JpaUtil.creerEntityManager();
+                JpaUtil.ouvrirTransaction();
+		Intervention i = rechercherInterventionEnCours(emp);
+                boolean cloture=false;
 		if (status >= 0 && status <=3 && commentaire.length()>0 && heureDefin >= 0 && heureDefin <= 24 && i != null){
 			
 			//Modification de l'intervention
@@ -180,13 +205,15 @@ public class Service{
 			String message = "Votre demande d'intervention a ete cloturee. Commentaire de l'employe : " +commentaire;			
 			Message.envoyerNotification(i.getUnClient().getNom(), i.getUnClient().getPrenom(), i.getUnClient().getTel(), message);
 			
-			return true;
+			 cloture=true;
 		}
-		return false;
+                JpaUtil.validerTransaction();
+                JpaUtil.fermerEntityManager();
+		return cloture;
 	}
 
 	//Recherche de l'intervention en cours pour un employé donnée (s'il en a une)
-	public static Intervention RechercherInterventionEnCours(Employe emp){
+	public static Intervention rechercherInterventionEnCours(Employe emp){
                 List<Intervention> list=emp.getListInterventions();
                 for (Intervention i : list){
                     if(i.getStatus()==0)

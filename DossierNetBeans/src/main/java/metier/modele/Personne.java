@@ -35,7 +35,6 @@ public abstract class Personne implements Serializable {
     private boolean civilite;
     private String motDePasse;
     
-    @Transient
     private String adressePostale;
     
     private String tel;
