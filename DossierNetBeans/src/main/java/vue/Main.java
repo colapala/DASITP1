@@ -219,6 +219,7 @@ public class Main {
         System.out.println("Choisir une option:");
         System.out.println("1.Se connecter");
         System.out.println("2.S'inscrire");
+        System.out.println("3.Quitter");
         System.out.println();
     }
     
@@ -246,7 +247,7 @@ public class Main {
 	
     public static void lancerMenuPrincipal(Personne p){
         affichageMenuPrincipal();
-         int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2));
+         int choix = Saisie.lireInteger("Choix: ", Arrays.asList(1,2,3));
          switch(choix){
              case 1:
              {
@@ -296,6 +297,9 @@ public class Main {
 			lancerMenuClient((Client)p);
 		 }
                  break;
+             case 3:
+                    System.out.println("A bientôt");
+                    System.exit(0);
            }
      }
 	 
