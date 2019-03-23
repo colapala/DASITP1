@@ -48,8 +48,8 @@ public class Service{
 			Date ahorita = new Date();
 			
 			if(8 < motDePasse.length() && motDePasse.length()< 16 && nom.length()>0 && prenom.length()>0 && mail.length()>2 && mail.contains("@") &&
-			adressePostale.length()>0 && tel.length()>0 && ((ahorita.getTime() - dateDeNaissance.getTime()) > 16*365*24*60*60*1000)) {
-				
+			adressePostale.length()>0 && tel.length()==10 && ((ahorita.getTime() - dateDeNaissance.getTime()) > 16*365*24*60*60*1000)) {
+
 				//Création et persistence d'un nouveau client
 				x = new Client (civilite, nom, prenom, motDePasse, adressePostale, tel, mail, dateDeNaissance);
 				calculerLatLng(x);
