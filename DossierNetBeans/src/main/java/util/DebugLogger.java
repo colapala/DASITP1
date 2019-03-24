@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package util;
 
 /**
  *
- * @author colap
+ * @author Chanèle Jourdan, Jorge Terreu, Corentin laharotte
  * FACULTATIF
  * Gestion des affichages de Debug dans la console
  */
@@ -43,27 +39,4 @@ public class DebugLogger {
         pause(5);
     }
     
-    public static void main(String[] args) {
-        
-        DebugLogger.log("** Début du Test **");
-        
-        DebugLogger.log("Message de DEBUG pour tester...");
-        
-        Integer a = 0;
-        Integer b = null;
-        
-        if (a < 0) {
-            DebugLogger.log("ERREUR sur la valeur de A");
-        }
-        
-        try {
-            if (b >  0) {
-                DebugLogger.log("Test OK pour la valeur de B");
-            }
-        } catch (Exception ex) {
-            DebugLogger.log("Problème avec B", ex);
-        }
-        
-        DebugLogger.log("** Fin du Test **");
-    }
 }

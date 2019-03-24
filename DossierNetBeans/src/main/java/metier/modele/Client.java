@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package metier.modele;
 
 /**
  *
- * @author Claharotte
+ * @author Chanèle Jourdan, Jorge Terreu, Corentin laharotte
+ * Description d'un Client
  */
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,7 +52,5 @@ public class Client extends Personne {
     public void setListInterventions(List<Intervention> listInterventions) {
         this.listInterventions = listInterventions;
     }
-    
-    
-    
+   
 }

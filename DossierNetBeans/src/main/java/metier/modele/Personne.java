@@ -1,26 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package metier.modele;
 
-import com.google.maps.model.LatLng;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Transient;
-import util.GeoTest;
-import static util.GeoTest.getLatLng;
 
 /**
  *
- * @author Claharotte
+ *@author Chanèle Jourdan, Jorge Terreu, Corentin laharotte
+ * Description d'une Personne
  */
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -40,7 +32,7 @@ public abstract class Personne implements Serializable {
     private String tel;
     private String mail;
     
-    //A calculer à partir de l'adresse
+    //calculer à partir de l'adresse
     private double latitude;
     private double longitude;
     
@@ -134,7 +126,6 @@ public abstract class Personne implements Serializable {
         return longitude;
     }
     
-
     public void setId(Integer id) {
         this.id = id;
     }

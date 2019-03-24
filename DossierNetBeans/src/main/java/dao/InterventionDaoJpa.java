@@ -1,22 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package dao;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import metier.modele.Employe;
-import metier.modele.Intervention;
-import metier.modele.Personne;
 
+package dao;
+import javax.persistence.EntityManager;
+import metier.modele.Intervention;
 /**
  *
- * @author Claharotte
+ * @author Chanèle Jourdan, Jorge Terreu, Corentin laharotte
+ * Classe qui gère la persistance des interventions
+ * 
  */
 public class InterventionDaoJpa{
     
+    //persite l'intervention placée en paramètre
     public static void creerIntervention(Intervention i){
         EntityManager em=JpaUtil.obtenirEntityManager();
         try {
@@ -25,27 +19,14 @@ public class InterventionDaoJpa{
         }
     }
     
-    /*public static List<Intervention> recupererListeIntervention(Personne p){
-        EntityManager em=JpaUtil.obtenirEntityManager();
-        String jpql = "Select i from Intervention i where i.unclient_id=:id";//or i.UNEMPLOYE_ID=:id";
-        Query requete=em.createQuery(jpql);
-        requete.setParameter("id",p.getId());
-        List<Intervention> result=null; //peut faire ça pr une liste ? 
-        try{
-            result=(List<Intervention>) requete.getResultList();
-        } catch (Exception e) {
-        }
-        return result;
-    }*/
-    
-    
-    public static void modifierIntervention(Intervention i){ //Pour le cas où on change son statut
+    //mise à jour de l'intervention
+     //Pour le cas où on change son statut
+    public static void modifierIntervention(Intervention i){
         EntityManager em=JpaUtil.obtenirEntityManager();
         try {
             em.merge(i);
         } catch(Exception e) {
         }
     }
-    
-    
+
 }
