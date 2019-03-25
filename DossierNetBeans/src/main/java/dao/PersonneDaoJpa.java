@@ -44,6 +44,19 @@ public class PersonneDaoJpa{
         return result;
     }
     
+      //Trouve la peronne qui possède l'id indiqué
+    public static Personne recupererPersonne(int id){
+        String jpql= "Select p from Personne p where p.id=:id";
+        Query requete=JpaUtil.obtenirEntityManager().createQuery(jpql);
+        requete.setParameter("id",id);
+        Personne result=null;
+        try{
+            result=(Personne) requete.getSingleResult();
+        } catch (Exception e){
+        }
+        return result;
+    }
+    
     //Trouve tous les employés disponibles et qui travaillent à l'heure indiquée
     public static List<Employe> trouverListeEmployeDispo(int heure){ 
         EntityManager em=JpaUtil.obtenirEntityManager();
